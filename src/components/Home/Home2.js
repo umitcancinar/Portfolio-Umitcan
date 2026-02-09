@@ -1,7 +1,12 @@
 import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
-import myImg from "../../Assets/avatar.svg";
+// DİKKAT: Burayı .png yaptık. Resim dosyan src/Assets/avatar.png olmalı.
+import myImg from "../../Assets/avatar.png";
 import Tilt from "react-parallax-tilt";
+import {
+  AiFillGithub,
+} from "react-icons/ai";
+import { FaLinkedinIn } from "react-icons/fa";
 
 function Home2() {
   return (
@@ -10,47 +15,70 @@ function Home2() {
         <Row>
           <Col md={8} className="home-about-description">
             <h1 style={{ fontSize: "2.6em" }}>
-              LET ME <span className="purple"> INTRODUCE </span> MYSELF
+              KENDİMİ <span className="purple"> TANITAYIM </span>
             </h1>
             <p className="home-about-body">
-              I’m a Software Engineer who loves transforming ideas into
-              reliable, scalable products. Over time, I’ve explored several
-              technologies and found my passion in building high-performance
-              systems and intuitive user experiences.
+              Ben, fikirleri güvenilir ve ölçeklenebilir ürünlere dönüştürmeyi seven bir Yazılım Mühendisiyim.
               <br />
               <br />
-              I’m proficient in
+              Şu dillerde yetkinliğim var:
+              <i>
+                <b className="purple"> Java ve JavaScript </b>
+              </i>
+              <br />
+              <br />
+              İlgi alanlarımın başında
               <i>
                 <b className="purple">
                   {" "}
-                  JavaScript, C++, Rust, Node.js, and Java{" "}
+                  Web Uygulamaları{" "}
                 </b>
               </i>
-              — and I enjoy working across both backend and frontend stacks.
+              geliştirmek ve modern teknolojileri keşfetmek geliyor.
               <br />
               <br />
-              My key areas of interest include developing
+              Projelerimi genellikle
+              <b className="purple"> Modern Javascript Kütüphaneleri</b> ve
               <i>
-                <b className="purple">
-                  {" "}
-                  Web Applications, Blockchain Solutions,{" "}
-                </b>
+                <b className="purple"> Java </b>
               </i>
-              and exploring new ways to bridge on-chain and off-chain systems.
-              <br />
-              <br />
-              Whenever possible, I love building projects with
-              <b className="purple"> Node.js </b> and modern frameworks like{" "}
-              <i>
-                <b className="purple">React.js</b> and{" "}
-                <b className="purple">Next.js</b>.
-              </i>
+              teknolojileri ile geliştirmeyi tercih ediyorum.
             </p>
           </Col>
           <Col md={4} className="myAvtar">
             <Tilt>
               <img src={myImg} className="img-fluid" alt="avatar" />
             </Tilt>
+          </Col>
+        </Row>
+        <Row>
+          <Col md={12} className="home-about-social">
+            <h1>SOSYAL MEDYA</h1>
+            <p>
+              Benimle <span className="purple">iletişime </span> geçmekten çekinmeyin
+            </p>
+            <ul className="home-about-social-links">
+              <li className="social-icons">
+                <a
+                  href="https://github.com/umitcancinar"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="icon-colour  home-social-icons"
+                >
+                  <AiFillGithub />
+                </a>
+              </li>
+              <li className="social-icons">
+                <a
+                  href="https://www.linkedin.com/in/umitcancinar/"
+                  target="_blank"
+                  rel="noreferrer"
+                  className="icon-colour  home-social-icons"
+                >
+                  <FaLinkedinIn />
+                </a>
+              </li>
+            </ul>
           </Col>
         </Row>
       </Container>

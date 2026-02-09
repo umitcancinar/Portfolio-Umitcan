@@ -2,10 +2,12 @@ import React, { useState, useEffect } from "react";
 import { Container, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Particle from "../Particle";
-import pdf from "../../Assets/../Assets/Soumyajit_Behera.pdf";
+import pdf from "../../Assets/CV_Umitcan_Cinar.pdf"; // PDF dosyanın yolu
 import { AiOutlineDownload } from "react-icons/ai";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
+
+// PDF okuyucunun düzgün çalışması için gerekli worker ayarı
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 function ResumeNew() {
@@ -19,6 +21,8 @@ function ResumeNew() {
     <div>
       <Container fluid className="resume-section">
         <Particle />
+        
+        {/* Üst İndirme Butonu */}
         <Row style={{ justifyContent: "center", position: "relative" }}>
           <Button
             variant="primary"
@@ -27,16 +31,18 @@ function ResumeNew() {
             style={{ maxWidth: "250px" }}
           >
             <AiOutlineDownload />
-            &nbsp;Download CV
+            &nbsp;CV'yi İndir
           </Button>
         </Row>
 
+        {/* PDF Görüntüleyici */}
         <Row className="resume">
           <Document file={pdf} className="d-flex justify-content-center">
             <Page pageNumber={1} scale={width > 786 ? 1.7 : 0.6} />
           </Document>
         </Row>
 
+        {/* Alt İndirme Butonu */}
         <Row style={{ justifyContent: "center", position: "relative" }}>
           <Button
             variant="primary"
@@ -45,7 +51,7 @@ function ResumeNew() {
             style={{ maxWidth: "250px" }}
           >
             <AiOutlineDownload />
-            &nbsp;Download CV
+            &nbsp;CV'yi İndir
           </Button>
         </Row>
       </Container>

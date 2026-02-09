@@ -35,10 +35,15 @@ function App() {
         <Navbar />
         <ScrollToTop />
         <Routes>
+          {/* KRİTİK AYAR: path="/" demek Ana Sayfa demektir. */}
+          {/* Burası Home bileşenine gitmeli. */}
           <Route path="/" element={<Home />} />
+          
           <Route path="/project" element={<Projects />} />
           <Route path="/about" element={<About />} />
           <Route path="/resume" element={<Resume />} />
+          
+          {/* Hatalı link girilirse Ana Sayfaya yönlendir */}
           <Route path="*" element={<Navigate to="/"/>} />
         </Routes>
         <Footer />
