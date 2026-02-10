@@ -2,12 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Container, Row } from "react-bootstrap";
 import Button from "react-bootstrap/Button";
 import Particle from "../Particle";
-import pdf from "../../Assets/CV_Umitcan_Cinar.pdf"; // PDF dosyanın yolu
+import pdf from "../../Assets/CV_Umitcan_Cinar.pdf";
 import { AiOutlineDownload } from "react-icons/ai";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 
-// PDF okuyucunun düzgün çalışması için gerekli worker ayarı
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 function ResumeNew() {
@@ -29,6 +28,7 @@ function ResumeNew() {
             href={pdf}
             target="_blank"
             style={{ maxWidth: "250px" }}
+            download="CV_Umitcan_Cinar.pdf" // <--- İŞTE BU SATIR İNDİRMEYİ SAĞLAR
           >
             <AiOutlineDownload />
             &nbsp;CV'yi İndir
@@ -49,6 +49,7 @@ function ResumeNew() {
             href={pdf}
             target="_blank"
             style={{ maxWidth: "250px" }}
+            download="CV_Umitcan_Cinar.pdf" // <--- İŞTE BU SATIR İNDİRMEYİ SAĞLAR
           >
             <AiOutlineDownload />
             &nbsp;CV'yi İndir
