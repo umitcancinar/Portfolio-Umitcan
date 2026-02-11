@@ -79,40 +79,37 @@ function Blog() {
   // Havalı Stok Resim Yedeği
   const defaultTechImage = "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=500&q=80";
 
-  // --- EFSANE API: SAURAV NEWSAPI KLONU (Limit yok, CORS yok, 100% Kalite) ---
+  // --- KRAL GERİ DÖNDÜ: GNEWS API ---
   const fetchNews = async () => {
     try {
-      const targetUrl = `https://saurav.tech/NewsAPI/top-headlines/category/technology/us.json`;
+      const apiKey = "1dfaf03a4227c476387444c64edfd11c"; 
+      const targetUrl = `https://gnews.io/api/v4/top-headlines?category=technology&lang=en&max=10&apikey=${apiKey}`;
+
       const response = await fetch(targetUrl);
       const data = await response.json();
 
-      // Sadece resimli ve düzgün başlığı olan haberleri filtreliyoruz (bozuk haber gelmesin diye)
       if (data && data.articles && data.articles.length > 0) {
-        const validArticles = data.articles.filter(article => article.title && article.urlToImage);
-        
-        const formattedNews = validArticles.map(article => ({
+        const formattedNews = data.articles.map(article => ({
           title: article.title,
           description: article.description ? article.description.substring(0, 100) + "..." : "Haberi okumak için tıklayın...",
           url: article.url,
-          urlToImage: article.urlToImage || defaultTechImage,
+          urlToImage: article.image || defaultTechImage, // GNews resimleri 'image' olarak döner
           publishedAt: new Date(article.publishedAt).toLocaleDateString(),
           source: { name: article.source.name } 
         }));
         
-        if (formattedNews.length > 0) {
-           setTechNews(formattedNews); 
-        }
+        setTechNews(formattedNews); 
       }
     } catch (error) {
-      console.error("API Hatası:", error);
+      console.error("GNews API Hatası:", error);
     }
   };
 
+  // İŞTE O UNUTTUĞUMUZ HAYAT KURTARAN TETİK:
   useEffect(() => {
     fetchNews();
   }, []);
 
-  // Haberleri 4 saniyede bir kaydır (Okuması daha rahat olsun diye 3'ten 4'e çıkardım)
   useEffect(() => {
     if (techNews.length === 0) return;
     const interval = setInterval(() => {
@@ -183,17 +180,15 @@ function Blog() {
                   {currentNews.description}
                 </Card.Text>
                 
-                {/* TIKLANABİLİR BUTON! */}
                 <Button variant="primary" href={currentNews.url} target="_blank" size="sm" style={{ marginTop: "10px" }}>
                    Read More &rarr;
                 </Button>
                 
                 <div style={{ marginTop: "15px", color: "gray", fontSize: "0.8em", fontWeight: "bold" }}>
-                   Source: {currentNews.source?.name} | {currentNews.publishedAt}
+                   Source: {currentNews.source?.name}
                 </div>
               </Card.Body>
 
-              {/* SAĞA SOLA KAYDIRMA OKLARI! */}
               <div style={{ position: "absolute", top: "50%", width: "100%", display: "flex", justifyContent: "space-between", padding: "0 10px", transform: "translateY(-50%)" }}>
                  <Button variant="dark" onClick={handlePrevNews} style={{ opacity: 0.7, borderRadius: "50%", width: "40px", height: "40px", padding: 0 }}> <AiOutlineArrowLeft /> </Button>
                  <Button variant="dark" onClick={handleNextNews} style={{ opacity: 0.7, borderRadius: "50%", width: "40px", height: "40px", padding: 0 }}> <AiOutlineArrowRight /> </Button>
