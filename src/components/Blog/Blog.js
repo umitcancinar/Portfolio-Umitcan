@@ -76,36 +76,31 @@ function Blog() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [isPaused, setIsPaused] = useState(false);
 
+  // Havalı Stok Resim (Otomatik gri resimlerin yerine geçecek)
   const defaultTechImage = "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=500&q=80";
 
-  // --- PREMIUM API: TECHCRUNCH (RSS2JSON) ---
+  // --- DEV.TO API (EN STABİL OLANI) ---
   const fetchNews = async () => {
     try {
-      // Dünyanın en iyi teknoloji haber sitesini doğrudan çekiyoruz!
-      const targetUrl = `https://api.rss2json.com/v1/api.json?rss_url=https://techcrunch.com/feed/`;
+      const targetUrl = `https://dev.to/api/articles?tag=technology&top=1&per_page=10`;
       const response = await fetch(targetUrl);
       const data = await response.json();
 
-      if (data && data.items && data.items.length > 0) {
-        const formattedNews = data.items.map(article => {
-          // Açıklamaların içindeki çirkin HTML taglarını ( <p>, <a> vb.) jilet gibi temizliyoruz:
-          const cleanDescription = article.description.replace(/<[^>]+>/g, '').substring(0, 110) + "...";
-
-          return {
-            title: article.title,
-            description: cleanDescription,
-            url: article.link,
-            // TechCrunch her zaman kaliteli görsel verir, yoksa da bizim stok resmi koyar:
-            urlToImage: article.thumbnail || article.enclosure?.link || defaultTechImage,
-            publishedAt: new Date(article.pubDate).toLocaleDateString(),
-            source: { name: "TechCrunch" } 
-          };
-        });
+      if (data && data.length > 0) {
+        const formattedNews = data.map(article => ({
+          title: article.title,
+          description: article.description || "Read full article...",
+          url: article.url,
+          // Gri "social_image" engellendi! Sadece gerçek kapak fotoğrafı veya bizim stok resim:
+          urlToImage: article.cover_image || defaultTechImage,
+          publishedAt: new Date(article.published_at).toLocaleDateString(),
+          source: { name: article.user.name } 
+        }));
         
         setTechNews(formattedNews); 
       }
     } catch (error) {
-      console.error("TechCrunch API Hatası:", error);
+      console.error("API Hatası:", error);
     }
   };
 
@@ -157,12 +152,14 @@ function Blog() {
         </h1>
 
         <Row style={{ marginTop: "50px" }}>
-          <Col md={6}>
+          
+          {/* --- SOL TARAF: GLOBAL HABERLER --- */}
+          <Col md={6} className="mb-5">
             <h3 style={{ color: "white", textAlign: "left" }}>
               <BiNews /> Global Tech News (ENG)
             </h3>
 
-            <Card className="project-card-view">
+            <Card className="project-card-view" style={{ minHeight: "500px", position: "relative" }}>
               <Card.Img
                 variant="top"
                 src={currentNews.urlToImage}
@@ -173,46 +170,64 @@ function Blog() {
                 }}
                 style={{ height: "250px", objectFit: "cover" }}
               />
-              <Card.Body>
+              <Card.Body style={{ textAlign: "left" }}>
                 <Card.Title style={{ color: "#c770f0", fontWeight: "bold" }}>
                   {currentNews.title}
                 </Card.Title>
                 <Card.Text style={{ color: "white" }}>
-                  {currentNews.description}
+                  {currentNews.description?.substring(0, 100)}...
                 </Card.Text>
+                
+                {/* TIKLANABİLİR BUTON GERİ GELDİ! */}
                 <Button variant="primary" href={currentNews.url} target="_blank" size="sm" style={{ marginTop: "10px" }}>
                    Read More &rarr;
                 </Button>
+                
                 <div style={{ marginTop: "15px", color: "gray", fontSize: "0.8em", fontWeight: "bold" }}>
                    Source: {currentNews.source?.name}
                 </div>
               </Card.Body>
+
+              {/* SAĞA SOLA KAYDIRMA OKLARI GERİ GELDİ! */}
+              <div style={{ position: "absolute", top: "50%", width: "100%", display: "flex", justifyContent: "space-between", padding: "0 10px", transform: "translateY(-50%)" }}>
+                 <Button variant="dark" onClick={handlePrevNews} style={{ opacity: 0.7, borderRadius: "50%", width: "40px", height: "40px", padding: 0 }}> <AiOutlineArrowLeft /> </Button>
+                 <Button variant="dark" onClick={handleNextNews} style={{ opacity: 0.7, borderRadius: "50%", width: "40px", height: "40px", padding: 0 }}> <AiOutlineArrowRight /> </Button>
+              </div>
             </Card>
           </Col>
 
-          <Col md={6}>
+          {/* --- SAĞ TARAF: KİŞİSEL BLOG --- */}
+          <Col md={6} className="mb-5">
             <h3 style={{ color: "white", textAlign: "left" }}>
               <BsPencilSquare /> Ümitcan'dan Notlar
             </h3>
 
             <Card
               className="project-card-view"
+              style={{ minHeight: "500px", position: "relative", cursor: "pointer" }}
               onClick={() => openPost(myPosts[postIndex])}
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
             >
               <Card.Img
                 variant="top"
                 src={myPosts[postIndex].image}
                 alt="blog"
-                style={{ height: "280px", objectFit: "contain" }}
+                style={{ height: "280px", objectFit: "contain", backgroundColor: "#000", padding: "5px" }}
               />
-              <Card.Body>
-                <Card.Title style={{ color: "#c770f0" }}>
+              <Card.Body style={{ textAlign: "left" }}>
+                <Card.Title style={{ color: "#c770f0", fontWeight: "bold" }}>
                   {myPosts[postIndex].title}
                 </Card.Title>
                 <Card.Text style={{ color: "white" }}>
                   {myPosts[postIndex].content.substring(0, 100)}...
                 </Card.Text>
               </Card.Body>
+              
+              <div style={{ position: "absolute", top: "50%", width: "100%", display: "flex", justifyContent: "space-between", padding: "0 10px", transform: "translateY(-50%)" }}>
+                 <Button variant="dark" onClick={(e) => {e.stopPropagation(); handlePrevPost();}} style={{ opacity: 0.7, borderRadius: "50%", width: "40px", height: "40px", padding: 0 }}> <AiOutlineArrowLeft /> </Button>
+                 <Button variant="dark" onClick={(e) => {e.stopPropagation(); handleNextPost();}} style={{ opacity: 0.7, borderRadius: "50%", width: "40px", height: "40px", padding: 0 }}> <AiOutlineArrowRight /> </Button>
+              </div>
             </Card>
           </Col>
         </Row>
