@@ -80,21 +80,23 @@ function Blog() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [isPaused, setIsPaused] = useState(false);
 
-  // --- API VERİ ÇEKME (GNEWS API + CORS PROXY) ---
+  // --- API VERİ ÇEKME (GNEWS API + CORS PROXY + DEDEKTİF MODU) ---
   const fetchNews = async () => {
     try {
       const apiKey = "1dfaf03a4227c476387444c64edfd11c"; 
       
-      // Asıl gitmek istediğimiz adres:
       const targetUrl = `https://gnews.io/api/v4/top-headlines?category=technology&lang=en&max=10&apikey=${apiKey}`;
-      
-      // CORS duvarını aşmak için aracı (Proxy) kullanıyoruz:
       const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+
+      console.log("📡 API'ye istek atılıyor..."); // BAŞLANGIÇ SİNYALİ
 
       const response = await fetch(proxyUrl);
       const data = await response.json();
 
+      console.log("🔥 API'DEN GELEN CEVAP (SUÇLU BURADA):", data); // GELEN VERİYİ KONSOLA YAZDIR
+
       if (data.articles && data.articles.length > 0) {
+        console.log("✅ Haberler başarıyla alındı!");
         const formattedNews = data.articles.map(article => ({
           title: article.title,
           description: article.description,
@@ -103,17 +105,14 @@ function Blog() {
           publishedAt: article.publishedAt,
           source: { name: article.source.name }
         }));
-        
         setTechNews(formattedNews); 
+      } else {
+        console.warn("⚠️ API cevap verdi ama içinde 'articles' dizisi yok! Limit dolmuş veya URL hatalı olabilir.");
       }
     } catch (error) {
-      console.error("API Hatası:", error);
+      console.error("❌ API Hatası (Fetch Patladı):", error);
     }
   };
-
-  useEffect(() => {
-    fetchNews();
-  }, []);
 
   // --- SOL TARAF OTOMATİK KAYDIRMA (3 SANİYE) ---
   useEffect(() => {
