@@ -92,8 +92,7 @@ function Blog() {
           description: article.description || "Haberi okumak için tıklayın...",
           url: article.url,
           // Önce cover_image (kapak) dener, yoksa social_image dener, o da yoksa bizim havalı yedek görseli koyar!
-          urlToImage: article.cover_image || article.social_image || defaultTechImage,
-          publishedAt: new Date(article.published_at).toLocaleDateString(),
+urlToImage: article.cover_image || defaultTechImage,          publishedAt: new Date(article.published_at).toLocaleDateString(),
           source: { name: article.user.name } 
         }));
         
