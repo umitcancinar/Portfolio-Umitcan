@@ -76,36 +76,34 @@ function Blog() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Havalı Stok Resim Yedeği
+  // Havalı Stok Resim Yedeği (Resimsiz haber gelirse siteyi kurtarır)
   const defaultTechImage = "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=500&q=80";
 
-  // --- KRAL GERİ DÖNDÜ: GNEWS API ---
+  // --- SINIRSIZ, DERTSİZ, KOTASIZ API: DEV.TO ---
   const fetchNews = async () => {
     try {
-      const apiKey = "1dfaf03a4227c476387444c64edfd11c"; 
-      const targetUrl = `https://gnews.io/api/v4/top-headlines?category=technology&lang=en&max=10&apikey=${apiKey}`;
-
+      const targetUrl = `https://dev.to/api/articles?tag=programming&top=1&per_page=10`;
       const response = await fetch(targetUrl);
       const data = await response.json();
 
-      if (data && data.articles && data.articles.length > 0) {
-        const formattedNews = data.articles.map(article => ({
+      if (data && data.length > 0) {
+        const formattedNews = data.map(article => ({
           title: article.title,
-          description: article.description ? article.description.substring(0, 100) + "..." : "Haberi okumak için tıklayın...",
+          description: article.description || "Makalenin tamamını okumak için tıklayın...",
           url: article.url,
-          urlToImage: article.image || defaultTechImage, // GNews resimleri 'image' olarak döner
-          publishedAt: new Date(article.publishedAt).toLocaleDateString(),
-          source: { name: article.source.name } 
+          // Sadece yazar kapak resmi koymuşsa al, yoksa direkt bizim jilet gibi resmi bas:
+          urlToImage: article.cover_image || defaultTechImage,
+          publishedAt: new Date(article.published_at).toLocaleDateString(),
+          source: { name: article.user.name } 
         }));
         
         setTechNews(formattedNews); 
       }
     } catch (error) {
-      console.error("GNews API Hatası:", error);
+      console.error("API Hatası:", error);
     }
   };
 
-  // İŞTE O UNUTTUĞUMUZ HAYAT KURTARAN TETİK:
   useEffect(() => {
     fetchNews();
   }, []);
@@ -177,7 +175,7 @@ function Blog() {
                   {currentNews.title}
                 </Card.Title>
                 <Card.Text style={{ color: "white" }}>
-                  {currentNews.description}
+                  {currentNews.description?.substring(0, 100)}...
                 </Card.Text>
                 
                 <Button variant="primary" href={currentNews.url} target="_blank" size="sm" style={{ marginTop: "10px" }}>
