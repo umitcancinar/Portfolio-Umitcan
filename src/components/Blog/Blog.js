@@ -80,22 +80,32 @@ function Blog() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [isPaused, setIsPaused] = useState(false);
 
-  // --- API VERİ ÇEKME ---
+  // --- API VERİ ÇEKME (GNEWS API) ---
   const fetchNews = async () => {
     try {
-      const apiKey = "9c787b679ae045ff9f8d695654763f52"; 
+      // DİKKAT: Aşağıdaki tırnak içine kendi GNews API Key'ini yapıştır!
+      const apiKey = "1dfaf03a4227c476387444c64edfd11c"; 
       
       const response = await fetch(
-        `https://newsapi.org/v2/top-headlines?country=us&category=technology&apiKey=${apiKey}`
+        `https://gnews.io/api/v4/top-headlines?category=technology&lang=en&max=10&apikey=${apiKey}`
       );
       
       const data = await response.json();
 
-      if (data.status === "ok" && data.articles.length > 0) {
-        const validNews = data.articles.filter(article => 
-            article.urlToImage && article.url && !article.title.includes("Removed")
-        );
-        if (validNews.length > 0) setTechNews(validNews.slice(0, 10)); 
+      // GNews 'articles' döndürür ve genelde temizdir
+      if (data.articles && data.articles.length > 0) {
+        // NewsAPI'den farklı olarak GNews resimlere 'image' der (urlToImage demez)
+        // Bu yüzden GNews verilerini bizim eski sisteme uyumlu hale getiriyoruz:
+        const formattedNews = data.articles.map(article => ({
+          title: article.title,
+          description: article.description,
+          url: article.url,
+          urlToImage: article.image, // GNews'in 'image' propsunu bizim 'urlToImage'e eşitliyoruz
+          publishedAt: article.publishedAt,
+          source: { name: article.source.name }
+        }));
+        
+        setTechNews(formattedNews); 
       }
     } catch (error) {
       console.error("API Hatası:", error);
