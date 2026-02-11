@@ -1,4 +1,4 @@
-# 👨‍💻 Ümitcan Çınar | Yazılım Mühendisi - Kişisel Portfolyo
+npm run deploy# 👨‍💻 Ümitcan Çınar | Yazılım Mühendisi - Kişisel Portfolyo
 
 [![Website Status](https://img.shields.io/website?down_color=red&down_message=Offline&label=Canl%C4%B1%20Site&style=flat-square&up_color=success&up_message=Online&url=https%3A%2F%2Fwww.umitcancinar.me)](https://www.umitcancinar.me)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Ba%C4%9Flant%C4%B1%20Kur-blue?style=flat-square&logo=linkedin)](YOUR_LINKEDIN_URL_HERE)
