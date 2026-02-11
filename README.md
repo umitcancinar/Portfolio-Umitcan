@@ -12,7 +12,7 @@
 
 Aşağıdaki görsel, projenin altyapısını, domain yönetimini, e-posta entegrasyonunu ve dağıtım (deployment) iş akışını özetlemektedir.
 
-![Ümitcan Çınar Portfolyo Mimarisi ve Dashboard](images/project-architecture-dashboard.png)
+![Ümitcan Çınar Portfolyo Mimarisi ve Dashboard](https://github.com/umitcancinar/Portfolio-Umitcan/blob/main/Images/project-architecture-dashboard.png)
 *Projenin DNS, Hosting, E-posta ve CI/CD süreçlerini gösteren altyapı diyagramı.*
 
 ## 🚀 Canlı Bağlantılar (Quick Links)
