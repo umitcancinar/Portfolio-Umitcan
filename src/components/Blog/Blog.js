@@ -76,28 +76,32 @@ function Blog() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Havalı Stok Resim (Otomatik gri resimlerin yerine geçecek)
+  // Havalı Stok Resim Yedeği
   const defaultTechImage = "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=500&q=80";
 
-  // --- DEV.TO API (EN STABİL OLANI) ---
+  // --- EFSANE API: SAURAV NEWSAPI KLONU (Limit yok, CORS yok, 100% Kalite) ---
   const fetchNews = async () => {
     try {
-      const targetUrl = `https://dev.to/api/articles?tag=technology&top=1&per_page=10`;
+      const targetUrl = `https://saurav.tech/NewsAPI/top-headlines/category/technology/us.json`;
       const response = await fetch(targetUrl);
       const data = await response.json();
 
-      if (data && data.length > 0) {
-        const formattedNews = data.map(article => ({
+      // Sadece resimli ve düzgün başlığı olan haberleri filtreliyoruz (bozuk haber gelmesin diye)
+      if (data && data.articles && data.articles.length > 0) {
+        const validArticles = data.articles.filter(article => article.title && article.urlToImage);
+        
+        const formattedNews = validArticles.map(article => ({
           title: article.title,
-          description: article.description || "Read full article...",
+          description: article.description ? article.description.substring(0, 100) + "..." : "Haberi okumak için tıklayın...",
           url: article.url,
-          // Gri "social_image" engellendi! Sadece gerçek kapak fotoğrafı veya bizim stok resim:
-          urlToImage: article.cover_image || defaultTechImage,
-          publishedAt: new Date(article.published_at).toLocaleDateString(),
-          source: { name: article.user.name } 
+          urlToImage: article.urlToImage || defaultTechImage,
+          publishedAt: new Date(article.publishedAt).toLocaleDateString(),
+          source: { name: article.source.name } 
         }));
         
-        setTechNews(formattedNews); 
+        if (formattedNews.length > 0) {
+           setTechNews(formattedNews); 
+        }
       }
     } catch (error) {
       console.error("API Hatası:", error);
@@ -108,11 +112,12 @@ function Blog() {
     fetchNews();
   }, []);
 
+  // Haberleri 4 saniyede bir kaydır (Okuması daha rahat olsun diye 3'ten 4'e çıkardım)
   useEffect(() => {
     if (techNews.length === 0) return;
     const interval = setInterval(() => {
       setNewsIndex(prev => (prev + 1) % techNews.length);
-    }, 3000);
+    }, 4000); 
     return () => clearInterval(interval);
   }, [techNews]);
 
@@ -120,7 +125,7 @@ function Blog() {
     if (!isPaused && !showModal) {
       const interval = setInterval(() => {
         setPostIndex(prev => (prev + 1) % myPosts.length);
-      }, 3000);
+      }, 4000);
       return () => clearInterval(interval);
     }
   }, [isPaused, showModal]);
@@ -175,20 +180,20 @@ function Blog() {
                   {currentNews.title}
                 </Card.Title>
                 <Card.Text style={{ color: "white" }}>
-                  {currentNews.description?.substring(0, 100)}...
+                  {currentNews.description}
                 </Card.Text>
                 
-                {/* TIKLANABİLİR BUTON GERİ GELDİ! */}
+                {/* TIKLANABİLİR BUTON! */}
                 <Button variant="primary" href={currentNews.url} target="_blank" size="sm" style={{ marginTop: "10px" }}>
                    Read More &rarr;
                 </Button>
                 
                 <div style={{ marginTop: "15px", color: "gray", fontSize: "0.8em", fontWeight: "bold" }}>
-                   Source: {currentNews.source?.name}
+                   Source: {currentNews.source?.name} | {currentNews.publishedAt}
                 </div>
               </Card.Body>
 
-              {/* SAĞA SOLA KAYDIRMA OKLARI GERİ GELDİ! */}
+              {/* SAĞA SOLA KAYDIRMA OKLARI! */}
               <div style={{ position: "absolute", top: "50%", width: "100%", display: "flex", justifyContent: "space-between", padding: "0 10px", transform: "translateY(-50%)" }}>
                  <Button variant="dark" onClick={handlePrevNews} style={{ opacity: 0.7, borderRadius: "50%", width: "40px", height: "40px", padding: 0 }}> <AiOutlineArrowLeft /> </Button>
                  <Button variant="dark" onClick={handleNextNews} style={{ opacity: 0.7, borderRadius: "50%", width: "40px", height: "40px", padding: 0 }}> <AiOutlineArrowRight /> </Button>
@@ -204,7 +209,7 @@ function Blog() {
 
             <Card
               className="project-card-view"
-              style={{ minHeight: "500px", position: "relative", cursor: "pointer" }}
+              style={{ minHeight: "500px", position: "relative", cursor: "pointer", border: "2px solid #c770f0" }}
               onClick={() => openPost(myPosts[postIndex])}
               onMouseEnter={() => setIsPaused(true)}
               onMouseLeave={() => setIsPaused(false)}
@@ -234,16 +239,16 @@ function Blog() {
       </Container>
 
       <Modal show={showModal} onHide={closeModal} size="lg" centered>
-        <Modal.Header closeButton>
-          <Modal.Title>{selectedPost?.title}</Modal.Title>
+        <Modal.Header closeButton style={{ backgroundColor: "#1c1c1c", borderBottom: "1px solid #c770f0" }}>
+          <Modal.Title style={{ color: "#c770f0" }}>{selectedPost?.title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body style={{ backgroundColor: "#171717", color: "white" }}>
           <img
             src={selectedPost?.image}
             alt="Post"
-            style={{ width: "100%", marginBottom: "20px" }}
+            style={{ width: "100%", maxHeight: "400px", objectFit: "contain", backgroundColor: "#000", borderRadius: "10px", marginBottom: "20px" }}
           />
-          <p>{selectedPost?.content}</p>
+          <p style={{ fontSize: "1.1em", lineHeight: "1.6", textAlign: "justify" }}>{selectedPost?.content}</p>
         </Modal.Body>
       </Modal>
     </Container>
