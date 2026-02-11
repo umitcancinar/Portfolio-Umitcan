@@ -76,28 +76,29 @@ function Blog() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [isPaused, setIsPaused] = useState(false);
 
+  // --- YEPYENİ VE DERTSİZ API (DEV.TO TECH NEWS) ---
   const fetchNews = async () => {
     try {
-      const apiKey = "1dfaf03a4227c476387444c64edfd11c";
-      const targetUrl = `https://gnews.io/api/v4/top-headlines?category=technology&lang=en&max=10&apikey=${apiKey}`;
+      // API Key YOK! Proxy YOK! CORS derdi YOK! Doğrudan çekiyoruz:
+      const targetUrl = `https://dev.to/api/articles?tag=technology&top=1&per_page=10`;
 
       const response = await fetch(targetUrl);
       const data = await response.json();
 
-      if (data.articles?.length > 0) {
-        const formattedNews = data.articles.map(article => ({
+      if (data && data.length > 0) {
+        const formattedNews = data.map(article => ({
           title: article.title,
-          description: article.description,
+          description: article.description || "Haberi okumak için tıklayın...",
           url: article.url,
-          urlToImage: article.image,
-          publishedAt: article.publishedAt,
-          source: { name: article.source.name }
+          urlToImage: article.social_image || "https://via.placeholder.com/500x250?text=Tech+News",
+          publishedAt: new Date(article.published_at).toLocaleDateString(),
+          source: { name: article.user.name } // Yazarın adını kaynak olarak gösterir
         }));
-
-        setTechNews(formattedNews);
+        
+        setTechNews(formattedNews); 
       }
     } catch (error) {
-      console.error("API Hatası:", error);
+      console.error("Yeni API Hatası:", error);
     }
   };
 
