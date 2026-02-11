@@ -5,15 +5,12 @@ import { AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlineClose } from "react-i
 import { BiNews } from "react-icons/bi";
 import { BsPencilSquare } from "react-icons/bs";
 
-// 👇👇👇 RESİMLERİ BURADA DÜZELTTİM 👇👇👇
-// Assets klasöründe blog4.png ve blog5.png olduğundan emin ol!
 import blog1 from "../../Assets/blog1.png"; 
 import blog2 from "../../Assets/blog2.png"; 
 import blog3 from "../../Assets/blog3.png"; 
-import blog4 from "../../Assets/blog4.png"; // <--- ARTIK KENDİ RESMİNİ ÇEKECEK
-import blog5 from "../../Assets/blog5.png"; // <--- ARTIK KENDİ RESMİNİ ÇEKECEK
+import blog4 from "../../Assets/blog4.png";
+import blog5 from "../../Assets/blog5.png";
 
-// --- GARANTİ YEDEK HABERLER (Global) ---
 const fallbackNews = [
   {
     title: "The AI Revolution",
@@ -33,7 +30,6 @@ const fallbackNews = [
   }
 ];
 
-// 👇👇👇 SAĞ TARAF: SENİN BLOG YAZILARIN (5 TANE) 👇👇👇
 const myPosts = [
   {
     id: 1,
@@ -61,14 +57,14 @@ const myPosts = [
     title: "Dostlarla Haklı Gurur",
     content: "Zorlu sürecin sonunda sertifikalarımızı aldık. Haklı gurur.",
     date: "6 Şubat 2026",
-    image: blog4 // <--- ARTIK YENİ RESİM GELECEK
+    image: blog4
   },
   {
     id: 5,
     title: "Dostlarla Toplu Fotoğraf :)",
     content: "Hepsi birbirinden kıymetli dostlara selam olsun!",
     date: "5 Şubat 2026",
-    image: blog5 // <--- ARTIK YENİ RESİM GELECEK
+    image: blog5
   }
 ];
 
@@ -80,23 +76,15 @@ function Blog() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [isPaused, setIsPaused] = useState(false);
 
-  // --- API VERİ ÇEKME (GNEWS API + CORS PROXY + DEDEKTİF MODU) ---
   const fetchNews = async () => {
     try {
-      const apiKey = "1dfaf03a4227c476387444c64edfd11c"; 
-      
+      const apiKey = "1dfaf03a4227c476387444c64edfd11c";
       const targetUrl = `https://gnews.io/api/v4/top-headlines?category=technology&lang=en&max=10&apikey=${apiKey}`;
-      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
 
-      console.log("📡 API'ye istek atılıyor..."); // BAŞLANGIÇ SİNYALİ
-
-      const response = await fetch(proxyUrl);
+      const response = await fetch(targetUrl);
       const data = await response.json();
 
-      console.log("🔥 API'DEN GELEN CEVAP (SUÇLU BURADA):", data); // GELEN VERİYİ KONSOLA YAZDIR
-
-      if (data.articles && data.articles.length > 0) {
-        console.log("✅ Haberler başarıyla alındı!");
+      if (data.articles?.length > 0) {
         const formattedNews = data.articles.map(article => ({
           title: article.title,
           description: article.description,
@@ -105,43 +93,50 @@ function Blog() {
           publishedAt: article.publishedAt,
           source: { name: article.source.name }
         }));
-        setTechNews(formattedNews); 
-      } else {
-        console.warn("⚠️ API cevap verdi ama içinde 'articles' dizisi yok! Limit dolmuş veya URL hatalı olabilir.");
+
+        setTechNews(formattedNews);
       }
     } catch (error) {
-      console.error("❌ API Hatası (Fetch Patladı):", error);
+      console.error("API Hatası:", error);
     }
   };
 
-  // --- SOL TARAF OTOMATİK KAYDIRMA (3 SANİYE) ---
   useEffect(() => {
+    fetchNews();
+  }, []);
+
+  useEffect(() => {
+    if (techNews.length === 0) return;
     const interval = setInterval(() => {
-        setNewsIndex((prev) => (prev + 1) % techNews.length);
-    }, 3000); 
+      setNewsIndex(prev => (prev + 1) % techNews.length);
+    }, 3000);
     return () => clearInterval(interval);
   }, [techNews]);
 
-  // --- SAĞ TARAF (BLOG) OTOMATİK KAYDIRMA (3 SANİYE) ---
   useEffect(() => {
-    let interval;
     if (!isPaused && !showModal) {
-      interval = setInterval(() => {
-        setPostIndex((prev) => (prev + 1) % myPosts.length);
-      }, 3000); 
+      const interval = setInterval(() => {
+        setPostIndex(prev => (prev + 1) % myPosts.length);
+      }, 3000);
+      return () => clearInterval(interval);
     }
-    return () => clearInterval(interval);
-  }, [isPaused, showModal]); 
+  }, [isPaused, showModal]);
 
-  // Manuel Kontrol
-  const handleNextNews = () => setNewsIndex((prev) => (prev + 1) % techNews.length);
-  const handlePrevNews = () => setNewsIndex((prev) => (prev - 1 + techNews.length) % techNews.length);
-  const handleNextPost = () => setPostIndex((prev) => (prev + 1) % myPosts.length);
-  const handlePrevPost = () => setPostIndex((prev) => (prev - 1 + myPosts.length) % myPosts.length);
+  const handleNextNews = () => setNewsIndex(prev => (prev + 1) % techNews.length);
+  const handlePrevNews = () => setNewsIndex(prev => (prev - 1 + techNews.length) % techNews.length);
+  const handleNextPost = () => setPostIndex(prev => (prev + 1) % myPosts.length);
+  const handlePrevPost = () => setPostIndex(prev => (prev - 1 + myPosts.length) % myPosts.length);
 
-  // Modal
-  const openPost = (post) => { setSelectedPost(post); setShowModal(true); setIsPaused(true); };
-  const closeModal = () => { setShowModal(false); setIsPaused(false); };
+  const openPost = (post) => {
+    setSelectedPost(post);
+    setShowModal(true);
+    setIsPaused(true);
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
+    setIsPaused(false);
+  };
 
   const currentNews = techNews[newsIndex] || fallbackNews[0];
 
@@ -152,106 +147,75 @@ function Blog() {
         <h1 className="project-heading">
           Teknoloji <strong className="purple">Gündemi </strong> & <strong className="purple">Blog</strong>
         </h1>
-        <p style={{ color: "white" }}>
-          Dünyadan teknoloji haberleri (ENG) ve kişisel notlarım.
-        </p>
 
         <Row style={{ marginTop: "50px" }}>
-          
-          {/* --- SOL TARAF: GLOBAL HABERLER --- */}
-          <Col md={6} className="mb-5">
-            <h3 style={{ color: "white", textAlign: "left" }}><BiNews /> Global Tech News (ENG)</h3>
-            <Card className="project-card-view" style={{ minHeight: "500px", position: "relative" }}>
-              <Card.Img 
-                variant="top" 
-                src={currentNews.urlToImage} 
-                alt="news" 
-                onError={(e) => { e.target.onerror = null; e.target.src="https://via.placeholder.com/500x250?text=News"; }}
-                style={{ height: "250px", objectFit: "cover", opacity: 0.9 }} 
+          <Col md={6}>
+            <h3 style={{ color: "white", textAlign: "left" }}>
+              <BiNews /> Global Tech News (ENG)
+            </h3>
+
+            <Card className="project-card-view">
+              <Card.Img
+                variant="top"
+                src={currentNews.urlToImage}
+                alt="news"
+                onError={(e) => {
+                  e.target.src = "https://via.placeholder.com/500x250?text=News";
+                }}
+                style={{ height: "250px", objectFit: "cover" }}
               />
-              <Card.Body style={{ textAlign: "left" }}>
-                <Card.Title style={{ color: "#c770f0", fontWeight: "bold", fontSize: "1.1em" }}>
-                    {currentNews.title}
+              <Card.Body>
+                <Card.Title style={{ color: "#c770f0" }}>
+                  {currentNews.title}
                 </Card.Title>
-                <Card.Text style={{ color: "white", fontSize: "0.9em" }}>
-                  {currentNews.description ? currentNews.description.substring(0, 100) + "..." : "Read more..."}
+                <Card.Text style={{ color: "white" }}>
+                  {currentNews.description?.substring(0, 100)}...
                 </Card.Text>
-                <Button variant="primary" href={currentNews.url} target="_blank" size="sm" style={{ marginTop: "10px" }}>
-                   Read More &rarr;
-                </Button>
-                <div style={{ marginTop: "15px", color: "gray", fontSize: "0.8em" }}>
-                    Source: {currentNews.source?.name}
-                </div>
               </Card.Body>
-              <div style={{ position: "absolute", top: "50%", width: "100%", display: "flex", justifyContent: "space-between", padding: "0 10px", transform: "translateY(-50%)" }}>
-                  <Button variant="dark" onClick={handlePrevNews} style={{ opacity: 0.7, borderRadius: "50%", width: "40px", height: "40px", padding: 0 }}> <AiOutlineArrowLeft /> </Button>
-                  <Button variant="dark" onClick={handleNextNews} style={{ opacity: 0.7, borderRadius: "50%", width: "40px", height: "40px", padding: 0 }}> <AiOutlineArrowRight /> </Button>
-              </div>
             </Card>
           </Col>
 
-          {/* --- SAĞ TARAF: KİŞİSEL BLOG --- */}
-          <Col md={6} className="mb-5">
-            <h3 style={{ color: "white", textAlign: "left" }}><BsPencilSquare /> Ümitcan'dan Notlar</h3>
-            <Card 
-                className="project-card-view" 
-                style={{ minHeight: "500px", position: "relative", cursor: "pointer", border: "2px solid #c770f0" }}
-                onClick={() => openPost(myPosts[postIndex])} 
-                onMouseEnter={() => setIsPaused(true)} 
-                onMouseLeave={() => setIsPaused(false)} 
+          <Col md={6}>
+            <h3 style={{ color: "white", textAlign: "left" }}>
+              <BsPencilSquare /> Ümitcan'dan Notlar
+            </h3>
+
+            <Card
+              className="project-card-view"
+              onClick={() => openPost(myPosts[postIndex])}
             >
-              {/* RESİMLERİN KESİLMEMESİ İÇİN contain AYARI */}
-              <Card.Img 
-                variant="top" 
-                src={myPosts[postIndex].image} 
-                alt="blog" 
-                style={{ 
-                    height: "280px", 
-                    objectFit: "contain", // Resim kırpılmaz, sığdırılır
-                    backgroundColor: "#000",
-                    padding: "5px"
-                }}
+              <Card.Img
+                variant="top"
+                src={myPosts[postIndex].image}
+                alt="blog"
+                style={{ height: "280px", objectFit: "contain" }}
               />
-              <Card.Body style={{ textAlign: "left" }}>
-                 <div style={{ position: "absolute", top: "10px", right: "10px", background: "rgba(0,0,0,0.7)", padding: "5px 10px", borderRadius: "10px", color: "#fff", fontSize:"0.8em" }}>
-                    Tam Ekran ⤢
-                 </div>
-                <Card.Title style={{ color: "#c770f0", fontWeight: "bold" }}>
-                    {myPosts[postIndex].title}
+              <Card.Body>
+                <Card.Title style={{ color: "#c770f0" }}>
+                  {myPosts[postIndex].title}
                 </Card.Title>
                 <Card.Text style={{ color: "white" }}>
                   {myPosts[postIndex].content.substring(0, 100)}...
                 </Card.Text>
-                 <div style={{ marginTop: "10px", color: "gray", fontSize: "0.8em" }}>
-                    {myPosts[postIndex].date}
-                </div>
-                {/* Sayfa Göstergesi */}
-                <div style={{ position: "absolute", bottom: "10px", right: "10px", color: "gray", fontSize: "0.8em" }}>
-                    {postIndex + 1} / {myPosts.length}
-                </div>
               </Card.Body>
-
-               <div style={{ position: "absolute", top: "50%", width: "100%", display: "flex", justifyContent: "space-between", padding: "0 10px", transform: "translateY(-50%)" }}>
-                  <Button variant="dark" onClick={(e) => {e.stopPropagation(); handlePrevPost();}} style={{ opacity: 0.7, borderRadius: "50%", width: "40px", height: "40px", padding: 0 }}> <AiOutlineArrowLeft /> </Button>
-                  <Button variant="dark" onClick={(e) => {e.stopPropagation(); handleNextPost();}} style={{ opacity: 0.7, borderRadius: "50%", width: "40px", height: "40px", padding: 0 }}> <AiOutlineArrowRight /> </Button>
-              </div>
             </Card>
           </Col>
         </Row>
       </Container>
 
-      {/* --- MODAL --- */}
-      <Modal show={showModal} onHide={closeModal} size="lg" centered style={{ color: "black" }}>
-        <Modal.Header style={{ backgroundColor: "#1c1c1c", borderBottom: "1px solid #c770f0" }}>
-          <Modal.Title style={{ color: "#c770f0" }}>{selectedPost?.title}</Modal.Title>
-          <Button variant="link" onClick={closeModal} style={{ color: "white", textDecoration: "none" }}><AiOutlineClose size={25}/></Button>
+      <Modal show={showModal} onHide={closeModal} size="lg" centered>
+        <Modal.Header closeButton>
+          <Modal.Title>{selectedPost?.title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body style={{ backgroundColor: "#171717", color: "white", minHeight: "400px" }}>
-           <img src={selectedPost?.image} alt="Post" style={{ width: "100%", maxHeight: "400px", objectFit: "contain", backgroundColor: "#000", borderRadius: "10px", marginBottom: "20px" }} />
-           <p style={{ fontSize: "1.1em", lineHeight: "1.6", textAlign: "justify" }}>{selectedPost?.content}</p>
+        <Modal.Body>
+          <img
+            src={selectedPost?.image}
+            alt="Post"
+            style={{ width: "100%", marginBottom: "20px" }}
+          />
+          <p>{selectedPost?.content}</p>
         </Modal.Body>
       </Modal>
-
     </Container>
   );
 }
