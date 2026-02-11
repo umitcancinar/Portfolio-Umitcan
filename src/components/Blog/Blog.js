@@ -76,30 +76,36 @@ function Blog() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [isPaused, setIsPaused] = useState(false);
 
-  // Garantili Yedek Teknoloji Görseli (Unsplash)
   const defaultTechImage = "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=500&q=80";
 
-  // --- YEPYENİ VE DERTSİZ API (DEV.TO TECH NEWS) ---
+  // --- PREMIUM API: TECHCRUNCH (RSS2JSON) ---
   const fetchNews = async () => {
     try {
-      const targetUrl = `https://dev.to/api/articles?tag=technology&top=1&per_page=10`;
+      // Dünyanın en iyi teknoloji haber sitesini doğrudan çekiyoruz!
+      const targetUrl = `https://api.rss2json.com/v1/api.json?rss_url=https://techcrunch.com/feed/`;
       const response = await fetch(targetUrl);
       const data = await response.json();
 
-      if (data && data.length > 0) {
-        const formattedNews = data.map(article => ({
-          title: article.title,
-          description: article.description || "Haberi okumak için tıklayın...",
-          url: article.url,
-          // Önce cover_image (kapak) dener, yoksa social_image dener, o da yoksa bizim havalı yedek görseli koyar!
-urlToImage: article.cover_image || defaultTechImage,          publishedAt: new Date(article.published_at).toLocaleDateString(),
-          source: { name: article.user.name } 
-        }));
+      if (data && data.items && data.items.length > 0) {
+        const formattedNews = data.items.map(article => {
+          // Açıklamaların içindeki çirkin HTML taglarını ( <p>, <a> vb.) jilet gibi temizliyoruz:
+          const cleanDescription = article.description.replace(/<[^>]+>/g, '').substring(0, 110) + "...";
+
+          return {
+            title: article.title,
+            description: cleanDescription,
+            url: article.link,
+            // TechCrunch her zaman kaliteli görsel verir, yoksa da bizim stok resmi koyar:
+            urlToImage: article.thumbnail || article.enclosure?.link || defaultTechImage,
+            publishedAt: new Date(article.pubDate).toLocaleDateString(),
+            source: { name: "TechCrunch" } 
+          };
+        });
         
         setTechNews(formattedNews); 
       }
     } catch (error) {
-      console.error("Yeni API Hatası:", error);
+      console.error("TechCrunch API Hatası:", error);
     }
   };
 
@@ -162,18 +168,24 @@ urlToImage: article.cover_image || defaultTechImage,          publishedAt: new D
                 src={currentNews.urlToImage}
                 alt="news"
                 onError={(e) => {
-                  e.target.onerror = null; // Sonsuz döngüyü engeller
-                  e.target.src = defaultTechImage; // Resim kırık gelirse anında yedeği yapıştırır
+                  e.target.onerror = null;
+                  e.target.src = defaultTechImage; 
                 }}
                 style={{ height: "250px", objectFit: "cover" }}
               />
               <Card.Body>
-                <Card.Title style={{ color: "#c770f0" }}>
+                <Card.Title style={{ color: "#c770f0", fontWeight: "bold" }}>
                   {currentNews.title}
                 </Card.Title>
                 <Card.Text style={{ color: "white" }}>
-                  {currentNews.description?.substring(0, 100)}...
+                  {currentNews.description}
                 </Card.Text>
+                <Button variant="primary" href={currentNews.url} target="_blank" size="sm" style={{ marginTop: "10px" }}>
+                   Read More &rarr;
+                </Button>
+                <div style={{ marginTop: "15px", color: "gray", fontSize: "0.8em", fontWeight: "bold" }}>
+                   Source: {currentNews.source?.name}
+                </div>
               </Card.Body>
             </Card>
           </Col>
