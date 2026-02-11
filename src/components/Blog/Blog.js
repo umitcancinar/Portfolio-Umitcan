@@ -80,27 +80,26 @@ function Blog() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [isPaused, setIsPaused] = useState(false);
 
-  // --- API VERİ ÇEKME (GNEWS API) ---
+  // --- API VERİ ÇEKME (GNEWS API + CORS PROXY) ---
   const fetchNews = async () => {
     try {
-      // DİKKAT: Aşağıdaki tırnak içine kendi GNews API Key'ini yapıştır!
       const apiKey = "1dfaf03a4227c476387444c64edfd11c"; 
       
-      const response = await fetch(
-        `https://gnews.io/api/v4/top-headlines?category=technology&lang=en&max=10&apikey=${apiKey}`
-      );
+      // Asıl gitmek istediğimiz adres:
+      const targetUrl = `https://gnews.io/api/v4/top-headlines?category=technology&lang=en&max=10&apikey=${apiKey}`;
       
+      // CORS duvarını aşmak için aracı (Proxy) kullanıyoruz:
+      const proxyUrl = `https://api.allorigins.win/raw?url=${encodeURIComponent(targetUrl)}`;
+
+      const response = await fetch(proxyUrl);
       const data = await response.json();
 
-      // GNews 'articles' döndürür ve genelde temizdir
       if (data.articles && data.articles.length > 0) {
-        // NewsAPI'den farklı olarak GNews resimlere 'image' der (urlToImage demez)
-        // Bu yüzden GNews verilerini bizim eski sisteme uyumlu hale getiriyoruz:
         const formattedNews = data.articles.map(article => ({
           title: article.title,
           description: article.description,
           url: article.url,
-          urlToImage: article.image, // GNews'in 'image' propsunu bizim 'urlToImage'e eşitliyoruz
+          urlToImage: article.image,
           publishedAt: article.publishedAt,
           source: { name: article.source.name }
         }));
