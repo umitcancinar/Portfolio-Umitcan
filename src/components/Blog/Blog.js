@@ -76,12 +76,13 @@ function Blog() {
   const [selectedPost, setSelectedPost] = useState(null);
   const [isPaused, setIsPaused] = useState(false);
 
+  // Garantili Yedek Teknoloji Görseli (Unsplash)
+  const defaultTechImage = "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=500&q=80";
+
   // --- YEPYENİ VE DERTSİZ API (DEV.TO TECH NEWS) ---
   const fetchNews = async () => {
     try {
-      // API Key YOK! Proxy YOK! CORS derdi YOK! Doğrudan çekiyoruz:
       const targetUrl = `https://dev.to/api/articles?tag=technology&top=1&per_page=10`;
-
       const response = await fetch(targetUrl);
       const data = await response.json();
 
@@ -90,9 +91,10 @@ function Blog() {
           title: article.title,
           description: article.description || "Haberi okumak için tıklayın...",
           url: article.url,
-          urlToImage: article.social_image || "https://via.placeholder.com/500x250?text=Tech+News",
+          // Önce cover_image (kapak) dener, yoksa social_image dener, o da yoksa bizim havalı yedek görseli koyar!
+          urlToImage: article.cover_image || article.social_image || defaultTechImage,
           publishedAt: new Date(article.published_at).toLocaleDateString(),
-          source: { name: article.user.name } // Yazarın adını kaynak olarak gösterir
+          source: { name: article.user.name } 
         }));
         
         setTechNews(formattedNews); 
@@ -161,7 +163,8 @@ function Blog() {
                 src={currentNews.urlToImage}
                 alt="news"
                 onError={(e) => {
-                  e.target.src = "https://via.placeholder.com/500x250?text=News";
+                  e.target.onerror = null; // Sonsuz döngüyü engeller
+                  e.target.src = defaultTechImage; // Resim kırık gelirse anında yedeği yapıştırır
                 }}
                 style={{ height: "250px", objectFit: "cover" }}
               />
