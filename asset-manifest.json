@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.0c1b7874.css",
-    "main.js": "/static/js/main.94bcf220.js",
+    "main.js": "/static/js/main.78b2c731.js",
     "static/js/453.ace21015.chunk.js": "/static/js/453.ace21015.chunk.js",
     "static/media/algovispro1.png": "/static/media/algovispro1.0bcf599d049d857aab60.png",
     "static/media/blog4.png": "/static/media/blog4.87dc1f2022c03e8f3584.png",
@@ -10,7 +10,7 @@
     "static/media/kodasistanim1.png": "/static/media/kodasistanim1.8786bc4beb486d5a536a.png",
     "static/media/blog2.png": "/static/media/blog2.b5b72822a398315496b3.png",
     "static/media/algolotokazandirir1.png": "/static/media/algolotokazandirir1.03fc0cd630f88bdb76d1.png",
-    "static/media/CV_Umitcan_Cinar.pdf": "/static/media/CV_Umitcan_Cinar.6e24a396554aea92be7d.pdf",
+    "static/media/CV_Umitcan_Cinar.pdf": "/static/media/CV_Umitcan_Cinar.eb599cfb604e7c681ccb.pdf",
     "static/media/blog1.png": "/static/media/blog1.867b9f04838b92a744ba.png",
     "static/media/avatar.png": "/static/media/avatar.caeb487987e71aa56205.png",
     "static/media/about.png": "/static/media/about.aee0f771fbfc1e7b8fa8.png",
@@ -21,11 +21,11 @@
     "index.html": "/index.html",
     "static/media/Apple MacOSX.svg": "/static/media/Apple MacOSX.6716caf08dfb7d91ce1df4625eadd6e7.svg",
     "main.0c1b7874.css.map": "/static/css/main.0c1b7874.css.map",
-    "main.94bcf220.js.map": "/static/js/main.94bcf220.js.map",
+    "main.78b2c731.js.map": "/static/js/main.78b2c731.js.map",
     "453.ace21015.chunk.js.map": "/static/js/453.ace21015.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.0c1b7874.css",
-    "static/js/main.94bcf220.js"
+    "static/js/main.78b2c731.js"
   ]
 }
