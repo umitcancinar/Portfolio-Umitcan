@@ -104,6 +104,16 @@ function NavBar() {
               </Nav.Link>
             </Nav.Item>
 
+            <Nav.Item>
+              <Nav.Link
+                as={Link}
+                to="/login"
+                onClick={() => updateExpanded(false)}
+              >
+                <AiOutlineUser style={{ marginBottom: "2px" }} /> Admin
+              </Nav.Link>
+            </Nav.Item>
+
             <Nav.Item className="fork-btn">
               <Button
                 href="https://github.com/umitcancinar/Portfolio-Umitcan"

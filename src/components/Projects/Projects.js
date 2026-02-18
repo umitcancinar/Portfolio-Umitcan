@@ -1,15 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import ProjectCard from "./ProjectCards";
 import Particle from "../Particle";
-
-// Proje Görsellerinin İçe Aktarılması
-// NOT: Bu dosyaların src/Assets/Projects/ klasöründe .png uzantılı olarak bulunduğundan emin ol.
-import algovisProImg from "../../Assets/Projects/algovispro1.png";
-import kodAsistanimImg from "../../Assets/Projects/kodasistanim1.png";
-import algoLotoImg from "../../Assets/Projects/algolotokazandirir1.png";
+import { db } from "../../firebase";
+import { collection, getDocs } from "firebase/firestore";
 
 function Projects() {
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "projects"));
+        const projectsData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+        setProjects(projectsData);
+      } catch (error) {
+        console.error("Error fetching projects:", error);
+      }
+    };
+
+    fetchProjects();
+  }, []);
+
   return (
     <Container fluid className="project-section">
       <Particle />
@@ -21,39 +33,25 @@ function Projects() {
           İşte üzerinde çalıştığım bazı önemli projeler.
         </p>
         <Row style={{ justifyContent: "center", paddingBottom: "10px" }}>
-          
-          <Col md={4} className="project-card">
-            <ProjectCard
-              imgPath={algovisProImg}
-              isBlog={false}
-              title="AlgovisPro"
-              description="Binary ve Linear Search algoritmalarının çalışma mantığını karşılaştırmalı olarak gösteren görselleştirme aracı. Algoritmaların karmaşıklığını anlamak için interaktif bir deneyim sunar."
-              ghLink="https://github.com/umitcancinar/AlgoVis_WebApp"
-              demoLink="https://algovispro.netlify.app/"
-            />
-          </Col>
 
-          <Col md={4} className="project-card">
-            <ProjectCard
-              imgPath={kodAsistanimImg}
-              isBlog={false}
-              title="KodAsistanım"
-              description="Kullanıcıların tarayıcı üzerinden kod yazıp çalıştırabileceği, kendi geliştirdiğim online IDE projesi. Modern web teknolojileri kullanılarak, hızlı ve kullanıcı dostu bir kodlama ortamı sağlamak amacıyla tasarlandı."
-              ghLink="https://github.com/umitcancinar/KODASISTANIM.WEBAPP"
-              demoLink="https://kodasistanim.netlify.app/"
-            />
-          </Col>
+          {projects.map((project) => (
+            <Col md={4} className="project-card" key={project.id}>
+              <ProjectCard
+                imgPath={project.imgPath}
+                isBlog={false}
+                title={project.title}
+                description={project.description}
+                ghLink={project.ghLink}
+                demoLink={project.demoLink}
+              />
+            </Col>
+          ))}
 
-          <Col md={4} className="project-card">
-            <ProjectCard
-              imgPath={algoLotoImg}
-              isBlog={false}
-              title="AlgoLotoKazandırır"
-              description="JavaScript'in Math.random() fonksiyonunun çalışma mantığını eğlenceli ve mizahi bir yolla kavratmak için tasarlanmış interaktif web sitesi."
-              ghLink="https://github.com/umitcancinar/Math.random-interactive-game-web-"
-              demoLink="https://algolotokazandirir.netlify.app/"
-            />
-          </Col>
+          {projects.length === 0 && (
+            <p style={{ color: "white", textAlign: "center" }}>
+              Henüz proje eklenmemiş veya yükleniyor...
+            </p>
+          )}
 
         </Row>
       </Container>
