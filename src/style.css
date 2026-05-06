@@ -692,4 +692,449 @@
 
 @media (max-width: 767px) {
   .loader-text { font-size: 1.3rem; }
+
+/* ============================================
+   🎯 Home Page - Hero Redesign
+   ============================================ */
+
+/* Profile Image Wrapper */
+.profile-image-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.profile-glow {
+  position: absolute;
+  width: 80%;
+  height: 80%;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(139, 63, 217, 0.25) 0%, rgba(244, 114, 182, 0.1) 50%, transparent 70%);
+  filter: blur(40px);
+  z-index: 1;
+  pointer-events: none;
+}
+
+.profile-image {
+  filter: drop-shadow(0 10px 40px rgba(139, 63, 217, 0.25));
+  transition: filter 0.5s ease;
+}
+
+.profile-col {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* CTA Buttons */
+.cta-buttons {
+  margin-top: 1rem;
+}
+
+.cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  border-radius: 12px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  border: 1.5px solid transparent;
+}
+
+.cta-btn-primary {
+  background: linear-gradient(135deg, #8b3fd9, #7c2fc4);
+  color: #fff;
+  border-color: rgba(139, 63, 217, 0.5);
+  box-shadow: 0 4px 16px rgba(139, 63, 217, 0.3);
+}
+
+.cta-btn-primary:hover {
+  background: linear-gradient(135deg, #9b51e0, #8b3fd9);
+  color: #fff;
+  box-shadow: 0 8px 28px rgba(139, 63, 217, 0.45);
+}
+
+.cta-btn-secondary {
+  background: rgba(139, 63, 217, 0.15);
+
+/* Scroll Indicator */
+.scroll-indicator {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  z-index: 10;
+}
+
+.scroll-mouse {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.scroll-text {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.35);
+  font-weight: 400;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   📖 About Page - Timeline
+   ============================================ */
+.timeline-section {
+  padding: 40px 0 60px;
+}
+
+.timeline-container {
+  position: relative;
+  max-width: 700px;
+  margin: 0 auto;
+  padding-left: 30px;
+}
+
+.timeline-container::before {
+  content: "";
+  position: absolute;
+  left: 12px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: linear-gradient(180deg, rgba(139, 63, 217, 0.6), rgba(139, 63, 217, 0.1));
+  border-radius: 2px;
+}
+
+.timeline-item {
+  position: relative;
+  margin-bottom: 40px;
+  padding-left: 30px;
+}
+
+.timeline-item:last-child {
+  margin-bottom: 0;
+}
+
+.timeline-dot {
+  position: absolute;
+  left: -24px;
+  top: 8px;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #8b3fd9, #f472b6);
+
+/* ============================================
+   💻 Tech Icons - Enhanced
+   ============================================ */
+.tech-icons-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.tech-icons {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  font-size: 1.2rem !important;
+  margin: 10px !important;
+  padding: 15px 20px !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+  backdrop-filter: blur(12px) saturate(180%) !important;
+  border: 1px solid rgba(200, 137, 230, 0.25) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+  cursor: pointer !important;
+  color: white;
+  width: 100% !important;
+  min-width: 90px !important;
+}
+
+.tech-icon-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.tech-icon-inner svg {
+  font-size: 2.5em !important;
+}
+
+.tech-label {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.tool-icon-card .tech-icon-images {
+  height: 1.8rem !important;
+  margin-bottom: 4px;
+}
+
+.tool-icon-card .tech-icons-text {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* ============================================
+   📦 Featured Project Cards (About page)
+   ============================================ */
+.featured-project-card {
+  overflow: hidden;
+}
+
+.featured-project-body {
+  padding: 1.5rem;
+}
+
+.featured-project-card .project-card-view {
+  height: 100%;
+}
+
+/* ============================================
+   📱 Mobile Responsive Fixes
+   ============================================ */
+@media (max-width: 767px) {
+  /* Home Hero */
+  .home-content {
+    padding: 6rem 0 2rem !important;
+    text-align: center;
+  }
+
+  .home-header {
+    padding-top: 40px !important;
+  }
+
+  .heading {
+    font-size: 1.8em !important;
+    padding-left: 0 !important;
+  }
+
+  .heading-name {
+    font-size: 1.8em !important;
+    padding-left: 0 !important;
+  }
+
+  .cta-buttons {
+    padding-left: 0 !important;
+    justify-content: center !important;
+  }
+
+  .cta-btn {
+    font-size: 0.85rem;
+    padding: 0.6rem 1.2rem;
+  }
+
+  .Typewriter__wrapper {
+    font-size: 1.2em !important;
+    position: static !important;
+  }
+
+  .Typewriter__cursor {
+    display: inline !important;
+  }
+
+  /* Profile Image */
+  .profile-image-wrapper {
+    padding: 1rem;
+  }
+
+  .profile-image {
+    max-height: 300px !important;
+  }
+
+  .profile-glow {
+    width: 60%;
+    height: 60%;
+  }
+
+  /* Scroll Indicator */
+  .scroll-indicator {
+    bottom: 15px;
+  }
+
+  .scroll-text {
+    display: none;
+  }
+
+  /* About Page */
+  .about-section {
+    padding-top: 100px !important;
+  }
+
+  .about-img {
+    padding-top: 40px !important;
+    padding-bottom: 30px !important;
+  }
+
+  .timeline-container {
+    padding-left: 20px;
+  }
+
+  .timeline-item {
+    padding-left: 20px;
+  }
+
+  .timeline-dot {
+    left: -19px;
+    width: 12px;
+    height: 12px;
+  }
+
+  .timeline-content {
+    padding: 16px 18px;
+  }
+
+  .timeline-title {
+    font-size: 1.05em;
+  }
+
+  /* Tech Icons */
+  .tech-icons {
+    margin: 6px !important;
+    padding: 10px 12px !important;
+    min-width: 70px !important;
+  }
+
+  .tech-icon-inner svg {
+    font-size: 2em !important;
+  }
+
+  .tech-label {
+    font-size: 0.6rem;
+  }
+
+  .tool-icon-card .tech-icon-images {
+    height: 1.4rem !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .heading {
+    font-size: 1.5em !important;
+  }
+
+  .heading-name {
+    font-size: 1.5em !important;
+  }
+
+  .cta-buttons {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta-btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .profile-image {
+    max-height: 250px !important;
+  }
+
+  .tech-icons {
+    min-width: 60px !important;
+    padding: 8px 10px !important;
+    margin: 4px !important;
+  }
+}
+
+  border: 3px solid rgba(139, 63, 217, 0.3);
+  box-shadow: 0 0 16px rgba(139, 63, 217, 0.4);
+  z-index: 2;
+}
+
+.timeline-content {
+  padding: 20px 24px;
+  border-radius: 14px;
+}
+
+.timeline-header {
+  margin-bottom: 8px;
+}
+
+.timeline-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #f1f5f9;
+  background: rgba(139, 63, 217, 0.2);
+  border: 1px solid rgba(139, 63, 217, 0.3);
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+}
+
+.timeline-title {
+  font-size: 1.2em;
+  font-weight: 700;
+  color: #f1f5f9;
+  margin-bottom: 4px;
+  margin-top: 10px;
+}
+
+.timeline-company {
+  font-size: 0.95em;
+  color: #8b3fd9;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.timeline-description {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+}
+
+.timeline-description li {
+  position: relative;
+  padding-left: 18px;
+  padding-bottom: 6px;
+  font-size: 0.88em;
+  color: #94a3b8;
+  line-height: 1.6;
+}
+
+.timeline-description li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #8b3fd9;
+  font-weight: 700;
+}
+  color: #f1f5f9;
+  border-color: rgba(139, 63, 217, 0.3);
+  backdrop-filter: blur(8px);
+}
+
+.cta-btn-secondary:hover {
+  background: rgba(139, 63, 217, 0.25);
+  color: #f1f5f9;
+  border-color: rgba(139, 63, 217, 0.5);
+  box-shadow: 0 8px 28px rgba(139, 63, 217, 0.25);
+}
+
+.cta-btn-outline {
+  background: transparent;
+  color: #94a3b8;
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+.cta-btn-outline:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #f1f5f9;
+  border-color: rgba(255, 255, 255, 0.25);
+}
 }
