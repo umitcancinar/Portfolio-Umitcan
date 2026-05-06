@@ -10,6 +10,7 @@ import {
 import { CgFileDocument, CgGitFork } from "react-icons/cg";
 import { ImBlog } from "react-icons/im";
 import { FaBars, FaTimes } from "react-icons/fa";
+import { MdEmail } from "react-icons/md";
 
 function NavBar() {
   const location = useLocation();
@@ -46,6 +47,7 @@ function NavBar() {
     { path: "/project", label: "Projeler", icon: <AiOutlineFundProjectionScreen size={18} /> },
     { path: "/resume", label: "Özgeçmiş", icon: <CgFileDocument size={18} /> },
     { path: "/blog", label: "Blog", icon: <ImBlog size={16} /> },
+    { path: "/contact", label: "İletişim", icon: <MdEmail size={16} /> },
   ];
 
   const isActive = (path) => {

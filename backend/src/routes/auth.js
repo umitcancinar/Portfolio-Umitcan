@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const authController = require("../controllers/authController");
-const { authenticate } = require("../middleware/auth");
+const { authenticate, requireAdmin } = require("../middleware/auth");
 const { authLimiter } = require("../middleware/rateLimiter");
 
 // POST /api/auth/register
@@ -15,5 +15,8 @@ router.post("/logout", authController.logout);
 
 // GET /api/auth/me (protected)
 router.get("/me", authenticate, authController.me);
+
+// GET /api/auth/users (admin only)
+router.get("/users", authenticate, requireAdmin, authController.getAllUsers);
 
 module.exports = router;

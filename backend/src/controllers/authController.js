@@ -93,4 +93,29 @@ async function me(req, res, next) {
   }
 }
 
-module.exports = { register, login, logout, me };
+/**
+ * GET /api/auth/users (admin only)
+ * List all users
+ */
+async function getAllUsers(req, res, next) {
+  try {
+    const { prisma } = require("../config/database");
+    const users = await prisma.user.findMany({
+      select: {
+        id: true,
+        email: true,
+        username: true,
+        role: true,
+        createdAt: true,
+        updatedAt: true,
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    res.json({ users });
+  } catch (error) {
+    next(error);
+  }
+}
+
+module.exports = { register, login, logout, me, getAllUsers };

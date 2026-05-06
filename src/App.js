@@ -8,6 +8,7 @@ import Projects from "./components/Projects/Projects";
 import Footer from "./components/Footer";
 import Resume from "./components/Resume/ResumeNew";
 import Blog from "./components/Blog/Blog";
+import Contact from "./components/Contact/Contact";
 import ContactFloating from "./components/ContactFloating";
 import AdminLogin from "./components/Admin/AdminLogin";
 import AdminDashboard from "./components/Admin/AdminDashboard";
@@ -49,6 +50,7 @@ function AppContent() {
           <Route path="/about" element={<PageTransition><About /></PageTransition>} />
           <Route path="/resume" element={<PageTransition><Resume /></PageTransition>} />
           <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
+          <Route path="/contact" element={<PageTransition><Contact /></PageTransition>} />
           <Route path="/login" element={<PageTransition><AdminLogin /></PageTransition>} />
           <Route path="/admin" element={
             <RequireAuth>
