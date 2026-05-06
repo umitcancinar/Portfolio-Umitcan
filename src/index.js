@@ -1,17 +1,31 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
+import { HelmetProvider } from "react-helmet-async";
 import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
+import { registerServiceWorker } from "./serviceWorkerRegistration";
 
 const container = document.getElementById("root");
 const root = createRoot(container);
 
 root.render(
   <React.StrictMode>
-    <App />
+    <HelmetProvider>
+      <App />
+    </HelmetProvider>
   </React.StrictMode>
 );
+
+// Service Worker (PWA) kaydı — production build'de çalışır
+registerServiceWorker({
+  onUpdate: (registration) => {
+    const waitingWorker = registration.waiting;
+    if (waitingWorker) {
+      waitingWorker.postMessage({ type: "SKIP_WAITING" });
+    }
+  },
+});
 
 // If you want to start measuring performance in your app, pass a function
 // to log results (for example: reportWebVitals(console.log))
