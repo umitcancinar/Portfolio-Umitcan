@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { AnimatePresence } from "framer-motion";
 import Preloader from "./components/Preloader";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home/Home";
@@ -7,7 +8,7 @@ import Projects from "./components/Projects/Projects";
 import Footer from "./components/Footer";
 import Resume from "./components/Resume/ResumeNew";
 import Blog from "./components/Blog/Blog";
-import ContactFloating from "./components/ContactFloating"; // Yeni Ekledik
+import ContactFloating from "./components/ContactFloating";
 import AdminLogin from "./components/Admin/AdminLogin";
 import AdminDashboard from "./components/Admin/AdminDashboard";
 import { AuthProvider, useAuth } from "./context/AuthContext";
@@ -15,9 +16,11 @@ import {
   BrowserRouter as Router,
   Route,
   Routes,
-  Navigate
+  Navigate,
+  useLocation
 } from "react-router-dom";
 import ScrollToTop from "./components/ScrollToTop";
+import PageTransition from "./components/PageTransition";
 import "./style.css";
 import "./App.css";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -30,6 +33,34 @@ function RequireAuth({ children }) {
   }
 
   return currentUser ? children : <Navigate to="/login" />;
+}
+
+function AppContent() {
+  const location = useLocation();
+
+  return (
+    <>
+      <Navbar />
+      <ScrollToTop />
+      <AnimatePresence mode="wait">
+        <Routes location={location} key={location.pathname}>
+          <Route path="/" element={<PageTransition><Home /></PageTransition>} />
+          <Route path="/project" element={<PageTransition><Projects /></PageTransition>} />
+          <Route path="/about" element={<PageTransition><About /></PageTransition>} />
+          <Route path="/resume" element={<PageTransition><Resume /></PageTransition>} />
+          <Route path="/blog" element={<PageTransition><Blog /></PageTransition>} />
+          <Route path="/login" element={<PageTransition><AdminLogin /></PageTransition>} />
+          <Route path="/admin" element={
+            <RequireAuth>
+              <AdminDashboard />
+            </RequireAuth>
+          } />
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </AnimatePresence>
+      <Footer />
+    </>
+  );
 }
 
 function App() {
@@ -55,23 +86,7 @@ function App() {
           {/* Sağ Alttaki WhatsApp/Mail Butonu */}
           <ContactFloating />
 
-          <Navbar />
-          <ScrollToTop />
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/project" element={<Projects />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/resume" element={<Resume />} />
-            <Route path="/blog" element={<Blog />} />
-            <Route path="/login" element={<AdminLogin />} />
-            <Route path="/admin" element={
-              <RequireAuth>
-                <AdminDashboard />
-              </RequireAuth>
-            } />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-          <Footer />
+          <AppContent />
         </div>
       </AuthProvider>
     </Router>
