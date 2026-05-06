@@ -3,8 +3,6 @@
    Apple sadeliğinde, modern dark theme
    ============================================ */
 
-/* --- CSS Custom Properties (via theme.js) --- */
-/* --- Inter Font (Google Fonts) --- */
 /* --- CSS Reset / Normalize --- */
 *, *::before, *::after {
   box-sizing: border-box;
