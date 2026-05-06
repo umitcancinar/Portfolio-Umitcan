@@ -2,24 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import ProjectCard from "./ProjectCards";
 import Particle from "../Particle";
-import { db } from "../../firebase";
-import { collection, getDocs } from "firebase/firestore";
+import { fetchProjects as apiFetchProjects } from "../../services/api";
 
 function Projects() {
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
-    const fetchProjects = async () => {
+    const loadProjects = async () => {
       try {
-        const querySnapshot = await getDocs(collection(db, "projects"));
-        const projectsData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+        const projectsData = await apiFetchProjects();
         setProjects(projectsData);
       } catch (error) {
         console.error("Error fetching projects:", error);
       }
     };
 
-    fetchProjects();
+    loadProjects();
   }, []);
 
   return (

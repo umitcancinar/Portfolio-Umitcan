@@ -2,8 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import { Container, Row, Col, Form, Button, Card, Table, Alert } from "react-bootstrap";
 import { useAuth } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { db } from "../../firebase";
-import { collection, getDocs, addDoc, deleteDoc, doc } from "firebase/firestore";
+import { fetchProjects as apiFetchProjects, addProject as apiAddProject, deleteProject as apiDeleteProject } from "../../services/api";
 import Particle from "../Particle";
 
 import { getRawGithubUrl } from "../../utils/imageHelper";
@@ -30,13 +29,12 @@ export default function AdminDashboard() {
     };
 
     useEffect(() => {
-        fetchProjects();
+        loadProjects();
     }, []);
 
-    const fetchProjects = async () => {
+    const loadProjects = async () => {
         try {
-            const querySnapshot = await getDocs(collection(db, "projects"));
-            const projectsData = querySnapshot.docs.map(doc => ({ ...doc.data(), id: doc.id }));
+            const projectsData = await apiFetchProjects();
             setProjects(projectsData);
         } catch (err) {
             console.error("Error fetching projects: ", err);
@@ -69,12 +67,12 @@ export default function AdminDashboard() {
         setLoading(true);
 
         try {
-            await addDoc(collection(db, "projects"), {
+            await apiAddProject({
                 title: titleRef.current.value,
                 description: descriptionRef.current.value,
                 ghLink: ghLinkRef.current.value,
                 demoLink: demoLinkRef.current.value,
-                imgPath: imageURLRef.current.value, // Using URL directly
+                imgPath: imageURLRef.current.value,
             });
 
             // Clear form
@@ -85,7 +83,7 @@ export default function AdminDashboard() {
             imageURLRef.current.value = "";
 
             // Refresh list
-            fetchProjects();
+            loadProjects();
         } catch (err) {
             console.error("Error adding project: ", err);
             setError("Failed to add project.");
@@ -96,8 +94,8 @@ export default function AdminDashboard() {
     async function handleDelete(id) {
         if (window.confirm("Are you sure you want to delete this project?")) {
             try {
-                await deleteDoc(doc(db, "projects", id));
-                fetchProjects();
+                await apiDeleteProject(id);
+                loadProjects();
             } catch (err) {
                 console.error("Error deleting project: ", err);
                 setError("Failed to delete project.");

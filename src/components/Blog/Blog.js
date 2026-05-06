@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Card, Button, Modal } from "react-bootstrap";
 import Particle from "../Particle";
-import { AiOutlineArrowLeft, AiOutlineArrowRight, AiOutlineClose } from "react-icons/ai";
+import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
 import { BiNews } from "react-icons/bi";
 import { BsPencilSquare } from "react-icons/bs";
 

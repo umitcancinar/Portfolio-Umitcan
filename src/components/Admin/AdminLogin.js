@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Form, Button, Card, Alert, Container } from "react-bootstrap";
 import { useAuth } from "../../context/AuthContext";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import Particle from "../Particle";
 
 export default function AdminLogin() {
@@ -20,8 +20,8 @@ export default function AdminLogin() {
             setLoading(true);
             await login(emailRef.current.value, passwordRef.current.value);
             navigate("/admin");
-        } catch {
-            setError("Failed to log in");
+        } catch (err) {
+            setError(err.response?.data?.message || "Failed to log in");
         }
 
         setLoading(false);
