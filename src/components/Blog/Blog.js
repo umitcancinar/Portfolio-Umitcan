@@ -1,249 +1,261 @@
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Card, Button, Modal } from "react-bootstrap";
+import React, { useState, useEffect, useMemo, useCallback } from "react";
+import { Container, Badge } from "react-bootstrap";
+import { motion, AnimatePresence } from "framer-motion";
+import { Link, useSearchParams } from "react-router-dom";
 import Particle from "../Particle";
-import { AiOutlineArrowLeft, AiOutlineArrowRight } from "react-icons/ai";
-import { BiNews } from "react-icons/bi";
-import { BsPencilSquare } from "react-icons/bs";
+import { fetchBlogPosts } from "../../services/api";
+import {
+  BsSearch,
+  BsX,
+  BsClock,
+  BsCalendar3,
+  BsNewspaper,
+  BsTags,
+  BsFolder2,
+  BsArrowRight,
+} from "react-icons/bs";
 
-import blog1 from "../../Assets/blog1.png"; 
-import blog2 from "../../Assets/blog2.png"; 
-import blog3 from "../../Assets/blog3.png"; 
-import blog4 from "../../Assets/blog4.png";
-import blog5 from "../../Assets/blog5.png";
+function BlogSkeleton() {
+  return (
+    <div className="blog-skeleton-card">
+      <div className="skeleton-img" style={{ height: "200px" }} />
+      <div className="skeleton-body">
+        <div className="skeleton-line skeleton-title" style={{ width: "70%" }} />
+        <div className="skeleton-line skeleton-text" />
+        <div className="skeleton-line skeleton-text short" />
+        <div className="skeleton-techs">
+          <div className="skeleton-tech" />
+          <div className="skeleton-tech" />
+        </div>
+      </div>
+    </div>
+  );
+}
 
-const fallbackNews = [
-  {
-    title: "The AI Revolution",
-    description: "Generative AI is reshaping how we work, code, and create content globally.",
-    url: "https://wired.com",
-    urlToImage: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&q=80&w=1000",
-    publishedAt: "Editor's Pick",
-    source: { name: "Wired" }
-  },
-  {
-    title: "Quantum Computing",
-    description: "Scientists achieve new milestone in stable qubits at room temperature.",
-    url: "https://techcrunch.com",
-    urlToImage: "https://images.unsplash.com/photo-1635070041078-e363dbe005cb?auto=format&fit=crop&q=80&w=1000",
-    publishedAt: "Top Story",
-    source: { name: "TechCrunch" }
-  }
+const CATEGORIES = [
+  { id: "all", label: "T\u00fcm\u00fc", icon: <BsNewspaper /> },
+  { id: "genel", label: "Genel", icon: <BsFolder2 /> },
+  { id: "teknoloji", label: "Teknoloji" },
+  { id: "yazilim", label: "Yaz\u0131l\u0131m" },
+  { id: "egitim", label: "E\u011fitim" },
 ];
 
-const myPosts = [
-  {
-    id: 1,
-    title: "TBM Akran Eğitimi Sunumu",
-    content: "Değerli eğitmenlerden değerli eğitimler alarak sonuca erdirdiğimiz bu kamp maceramızın son gününde sınav ve sunum yaptık. Sunumumuz çok beğenildi :)",
-    date: "6 Şubat 2026",
-    image: blog1
-  },
-  {
-    id: 2,
-    title: "Belge Töreni",
-    content: "Eğitimler ve sınavlar sonucu bu değerli belgeyi almaya hak kazandım.",
-    date: "6 Şubat 2026",
-    image: blog2
-  },
-  {
-    id: 3,
-    title: "Online Kod Editörüm Yayında!",
-    content: "Uzun zamandır üzerinde çalıştığım API ile çalışan online kod editörüm KODASISTANIM yayında. Hemen deneyin!",
-    date: "1 Şubat 2026",
-    image: blog3
-  },
-  {
-    id: 4,
-    title: "Dostlarla Haklı Gurur",
-    content: "Zorlu sürecin sonunda sertifikalarımızı aldık. Haklı gurur.",
-    date: "6 Şubat 2026",
-    image: blog4
-  },
-  {
-    id: 5,
-    title: "Dostlarla Toplu Fotoğraf :)",
-    content: "Hepsi birbirinden kıymetli dostlara selam olsun!",
-    date: "5 Şubat 2026",
-    image: blog5
-  }
-];
+function formatDate(dateStr) {
+  if (!dateStr) return "";
+  try {
+    return new Date(dateStr).toLocaleDateString("tr-TR", {
+      year: "numeric", month: "short", day: "numeric",
+    });
+  } catch { return dateStr; }
+}
 
 function Blog() {
-  const [techNews, setTechNews] = useState(fallbackNews);
-  const [newsIndex, setNewsIndex] = useState(0);
-  const [postIndex, setPostIndex] = useState(0);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedPost, setSelectedPost] = useState(null);
-  const [isPaused, setIsPaused] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [posts, setPosts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState(searchParams.get("search") || "");
+  const [selectedCategory, setSelectedCategory] = useState(searchParams.get("category") || "all");
+  const [selectedTag, setSelectedTag] = useState(searchParams.get("tag") || "all");
 
-  // Havalı Stok Resim Yedeği (Resimsiz haber gelirse siteyi kurtarır)
-  const defaultTechImage = "https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?auto=format&fit=crop&w=500&q=80";
-
-  // --- SINIRSIZ, DERTSİZ, KOTASIZ API: DEV.TO ---
-  const fetchNews = async () => {
-    try {
-      const targetUrl = `https://dev.to/api/articles?tag=programming&top=1&per_page=10`;
-      const response = await fetch(targetUrl);
-      const data = await response.json();
-
-      if (data && data.length > 0) {
-        const formattedNews = data.map(article => ({
-          title: article.title,
-          description: article.description || "Makalenin tamamını okumak için tıklayın...",
-          url: article.url,
-          // Sadece yazar kapak resmi koymuşsa al, yoksa direkt bizim jilet gibi resmi bas:
-          urlToImage: article.cover_image || defaultTechImage,
-          publishedAt: new Date(article.published_at).toLocaleDateString(),
-          source: { name: article.user.name } 
-        }));
-        
-        setTechNews(formattedNews); 
+  useEffect(() => {
+    const loadPosts = async () => {
+      setLoading(true);
+      try {
+        const params = {
+          category: selectedCategory !== "all" ? selectedCategory : undefined,
+          tag: selectedTag !== "all" ? selectedTag : undefined,
+        };
+        const data = await fetchBlogPosts(params);
+        setPosts(Array.isArray(data) ? data : []);
+      } catch (error) {
+        console.error("Error fetching blog posts:", error);
+        setPosts([]);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("API Hatası:", error);
-    }
-  };
+    };
+    loadPosts();
+  }, [selectedCategory, selectedTag]);
 
-  useEffect(() => {
-    fetchNews();
-  }, []);
+  const allTags = useMemo(() => {
+    const tagSet = new Set();
+    posts.forEach((p) => {
+      if (p.tags && Array.isArray(p.tags)) {
+        p.tags.forEach((t) => tagSet.add(t));
+      }
+    });
+    return Array.from(tagSet).sort();
+  }, [posts]);
 
-  useEffect(() => {
-    if (techNews.length === 0) return;
-    const interval = setInterval(() => {
-      setNewsIndex(prev => (prev + 1) % techNews.length);
-    }, 4000); 
-    return () => clearInterval(interval);
-  }, [techNews]);
+  const filteredPosts = useMemo(() => {
+    if (!searchQuery) return posts;
+    const q = searchQuery.toLowerCase();
+    return posts.filter(
+      (p) =>
+        p.title?.toLowerCase().includes(q) ||
+        p.excerpt?.toLowerCase().includes(q) ||
+        p.tags?.some((t) => t.toLowerCase().includes(q))
+    );
+  }, [posts, searchQuery]);
 
-  useEffect(() => {
-    if (!isPaused && !showModal) {
-      const interval = setInterval(() => {
-        setPostIndex(prev => (prev + 1) % myPosts.length);
-      }, 4000);
-      return () => clearInterval(interval);
-    }
-  }, [isPaused, showModal]);
+  const handleClearFilters = useCallback(() => {
+    setSearchQuery("");
+    setSelectedCategory("all");
+    setSelectedTag("all");
+    setSearchParams({});
+  }, [setSearchParams]);
 
-  const handleNextNews = () => setNewsIndex(prev => (prev + 1) % techNews.length);
-  const handlePrevNews = () => setNewsIndex(prev => (prev - 1 + techNews.length) % techNews.length);
-  const handleNextPost = () => setPostIndex(prev => (prev + 1) % myPosts.length);
-  const handlePrevPost = () => setPostIndex(prev => (prev - 1 + myPosts.length) % myPosts.length);
-
-  const openPost = (post) => {
-    setSelectedPost(post);
-    setShowModal(true);
-    setIsPaused(true);
-  };
-
-  const closeModal = () => {
-    setShowModal(false);
-    setIsPaused(false);
-  };
-
-  const currentNews = techNews[newsIndex] || fallbackNews[0];
+  const hasActiveFilters =
+    searchQuery || selectedCategory !== "all" || selectedTag !== "all";
 
   return (
     <Container fluid className="project-section">
       <Particle />
       <Container>
-        <h1 className="project-heading">
-          Teknoloji <strong className="purple">Gündemi </strong> & <strong className="purple">Blog</strong>
-        </h1>
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+        >
+          <h1 className="project-heading">
+            <strong className="purple">Blog</strong> &amp; Teknoloji
+          </h1>
+          <p className="projects-subtitle">
+            Yaz\u0131l\u0131m, teknoloji ve e\u011fitim \u00fczerine yaz\u0131lar
+          </p>
+        </motion.div>
 
-        <Row style={{ marginTop: "50px" }}>
-          
-          {/* --- SOL TARAF: GLOBAL HABERLER --- */}
-          <Col md={6} className="mb-5">
-            <h3 style={{ color: "white", textAlign: "left" }}>
-              <BiNews /> Global Tech News (ENG)
-            </h3>
+        <motion.div className="projects-filters"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, delay: 0.1 }}
+        >
+          <div className="projects-search-wrap">
+            <BsSearch className="projects-search-icon" size={16} />
+            <input type="text" className="projects-search-input"
+              placeholder="Blog yaz\u0131s\u0131 ara..."
+              value={searchQuery}
+              onChange={(e) => { setSearchQuery(e.target.value); setSearchParams({ search: e.target.value }); }}
+            />
+            {searchQuery && (
+              <button className="projects-search-clear" onClick={() => setSearchQuery("")}>
+                <BsX size={18} />
+              </button>
+            )}
+          </div>
 
-            <Card className="project-card-view" style={{ minHeight: "500px", position: "relative" }}>
-              <Card.Img
-                variant="top"
-                src={currentNews.urlToImage}
-                alt="news"
-                onError={(e) => {
-                  e.target.onerror = null;
-                  e.target.src = defaultTechImage; 
-                }}
-                style={{ height: "250px", objectFit: "cover" }}
-              />
-              <Card.Body style={{ textAlign: "left" }}>
-                <Card.Title style={{ color: "#c770f0", fontWeight: "bold" }}>
-                  {currentNews.title}
-                </Card.Title>
-                <Card.Text style={{ color: "white" }}>
-                  {currentNews.description?.substring(0, 100)}...
-                </Card.Text>
-                
-                <Button variant="primary" href={currentNews.url} target="_blank" size="sm" style={{ marginTop: "10px" }}>
-                   Read More &rarr;
-                </Button>
-                
-                <div style={{ marginTop: "15px", color: "gray", fontSize: "0.8em", fontWeight: "bold" }}>
-                   Source: {currentNews.source?.name}
-                </div>
-              </Card.Body>
+          <div className="projects-categories">
+            {CATEGORIES.map((cat) => (
+              <button key={cat.id}
+                className={`projects-cat-btn ${selectedCategory === cat.id ? "active" : ""}`}
+                onClick={() => setSelectedCategory(cat.id)}
+              >
+                {cat.icon && <span className="cat-icon">{cat.icon}</span>}
+                {cat.label}
+              </button>
+            ))}
+          </div>
 
-              <div style={{ position: "absolute", top: "50%", width: "100%", display: "flex", justifyContent: "space-between", padding: "0 10px", transform: "translateY(-50%)" }}>
-                 <Button variant="dark" onClick={handlePrevNews} style={{ opacity: 0.7, borderRadius: "50%", width: "40px", height: "40px", padding: 0 }}> <AiOutlineArrowLeft /> </Button>
-                 <Button variant="dark" onClick={handleNextNews} style={{ opacity: 0.7, borderRadius: "50%", width: "40px", height: "40px", padding: 0 }}> <AiOutlineArrowRight /> </Button>
-              </div>
-            </Card>
-          </Col>
+          {allTags.length > 0 && (
+            <div className="blog-tags-filter">
+              <BsTags size={14} className="blog-tags-icon" />
+              <button className={`blog-tag-btn ${selectedTag === "all" ? "active" : ""}`}
+                onClick={() => setSelectedTag("all")}>T\u00fcm\u00fc</button>
+              {allTags.map((tag) => (
+                <button key={tag}
+                  className={`blog-tag-btn ${selectedTag === tag ? "active" : ""}`}
+                  onClick={() => setSelectedTag(tag)}>#{tag}</button>
+              ))}
+            </div>
+          )}
 
-          {/* --- SAĞ TARAF: KİŞİSEL BLOG --- */}
-          <Col md={6} className="mb-5">
-            <h3 style={{ color: "white", textAlign: "left" }}>
-              <BsPencilSquare /> Ümitcan'dan Notlar
-            </h3>
+          {hasActiveFilters && (
+            <div className="projects-active-filters">
+              <span className="projects-filter-count">{filteredPosts.length} sonu\u00e7</span>
+              <button className="projects-clear-filters" onClick={handleClearFilters}>
+                <BsX size={16} /> Temizle
+              </button>
+            </div>
+          )}
+        </motion.div>
 
-            <Card
-              className="project-card-view"
-              style={{ minHeight: "500px", position: "relative", cursor: "pointer", border: "2px solid #c770f0" }}
-              onClick={() => openPost(myPosts[postIndex])}
-              onMouseEnter={() => setIsPaused(true)}
-              onMouseLeave={() => setIsPaused(false)}
-            >
-              <Card.Img
-                variant="top"
-                src={myPosts[postIndex].image}
-                alt="blog"
-                style={{ height: "280px", objectFit: "contain", backgroundColor: "#000", padding: "5px" }}
-              />
-              <Card.Body style={{ textAlign: "left" }}>
-                <Card.Title style={{ color: "#c770f0", fontWeight: "bold" }}>
-                  {myPosts[postIndex].title}
-                </Card.Title>
-                <Card.Text style={{ color: "white" }}>
-                  {myPosts[postIndex].content.substring(0, 100)}...
-                </Card.Text>
-              </Card.Body>
-              
-              <div style={{ position: "absolute", top: "50%", width: "100%", display: "flex", justifyContent: "space-between", padding: "0 10px", transform: "translateY(-50%)" }}>
-                 <Button variant="dark" onClick={(e) => {e.stopPropagation(); handlePrevPost();}} style={{ opacity: 0.7, borderRadius: "50%", width: "40px", height: "40px", padding: 0 }}> <AiOutlineArrowLeft /> </Button>
-                 <Button variant="dark" onClick={(e) => {e.stopPropagation(); handleNextPost();}} style={{ opacity: 0.7, borderRadius: "50%", width: "40px", height: "40px", padding: 0 }}> <AiOutlineArrowRight /> </Button>
-              </div>
-            </Card>
-          </Col>
-        </Row>
+        {loading ? (
+          <motion.div className="blog-grid" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+            {[1, 2, 3, 4, 5, 6].map((n) => <BlogSkeleton key={n} />)}
+          </motion.div>
+        ) : (
+          <AnimatePresence mode="wait">
+            {filteredPosts.length > 0 ? (
+              <motion.div className="blog-grid" key="posts"
+                initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              >
+                {filteredPosts.map((post, index) => (
+                  <motion.div key={post.id || post.slug || index}
+                    initial={{ opacity: 0, y: 30 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.4, delay: (index % 6) * 0.08, ease: [0.16, 1, 0.3, 1] }}
+                    whileHover={{ y: -6 }}
+                    style={{ height: "100%" }}
+                  >
+                    <Link to={`/blog/${post.slug}`} className="blog-card-link">
+                      <div className="blog-card-enhanced">
+                        {post.coverImage ? (
+                          <div className="blog-card-img-wrap">
+                            <img src={post.coverImage} alt={post.title} className="blog-card-img"
+                              loading="lazy"
+                              onError={(e) => { e.target.style.display = "none"; }}
+                            />
+                          </div>
+                        ) : (
+                          <div className="blog-card-img-placeholder">
+                            <BsNewspaper size={48} />
+                          </div>
+                        )}
+                        <div className="blog-card-body-enhanced">
+                          <div className="blog-card-meta">
+                            <span className="blog-card-date">
+                              <BsCalendar3 size={12} /> {formatDate(post.createdAt || post.publishedAt || post.date)}
+                            </span>
+                            {post.readTime && (
+                              <span className="blog-card-readtime">
+                                <BsClock size={12} /> {post.readTime} dk
+                              </span>
+                            )}
+                          </div>
+                          <h3 className="blog-card-title">{post.title}</h3>
+                          <p className="blog-card-excerpt">{post.excerpt?.substring(0, 120)}...</p>
+                          <div className="blog-card-footer">
+                            {post.tags && post.tags.length > 0 && (
+                              <div className="blog-card-tags">
+                                {post.tags.slice(0, 3).map((tag, i) => (
+                                  <Badge key={i} bg="purple" className="blog-card-tag">#{tag}</Badge>
+                                ))}
+                              </div>
+                            )}
+                            <span className="blog-card-readmore">Oku <BsArrowRight size={14} /></span>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  </motion.div>
+                ))}
+              </motion.div>
+            ) : (
+              <motion.div className="projects-empty" key="empty"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+              >
+                <div className="projects-empty-icon"><BsNewspaper size={48} /></div>
+                <h3>Yaz\u0131 Bulunamad\u0131</h3>
+                <p>Araman\u0131za uygun blog yaz\u0131s\u0131 bulunamad\u0131.</p>
+                <button className="projects-empty-btn" onClick={handleClearFilters}>
+                  Filtreleri Temizle
+                </button>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        )}
       </Container>
-
-      <Modal show={showModal} onHide={closeModal} size="lg" centered>
-        <Modal.Header closeButton style={{ backgroundColor: "#1c1c1c", borderBottom: "1px solid #c770f0" }}>
-          <Modal.Title style={{ color: "#c770f0" }}>{selectedPost?.title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body style={{ backgroundColor: "#171717", color: "white" }}>
-          <img
-            src={selectedPost?.image}
-            alt="Post"
-            style={{ width: "100%", maxHeight: "400px", objectFit: "contain", backgroundColor: "#000", borderRadius: "10px", marginBottom: "20px" }}
-          />
-          <p style={{ fontSize: "1.1em", lineHeight: "1.6", textAlign: "justify" }}>{selectedPost?.content}</p>
-        </Modal.Body>
-      </Modal>
     </Container>
   );
 }

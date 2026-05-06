@@ -8,7 +8,14 @@ async function getAll(req, res, next) {
     const isAdmin = req.user?.role === "admin";
     const published = isAdmin ? undefined : true;
 
-    const posts = await blogService.getAll({ published });
+    const { category, tag, search } = req.query;
+
+    const posts = await blogService.getAll({
+      published,
+      category,
+      tag,
+      search,
+    });
 
     res.json({ posts });
   } catch (error) {

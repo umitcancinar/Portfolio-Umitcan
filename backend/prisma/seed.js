@@ -79,24 +79,148 @@ async function main() {
 
   console.log(`✅ Sample project created: ${project.title}`);
 
-  // ── Sample Blog Post ──
-  const blog = await prisma.blogPost.upsert({
-    where: { slug: "welcome-to-my-blog" },
-    update: {},
-    create: {
-      title: "Welcome to My Blog",
-      slug: "welcome-to-my-blog",
-      excerpt:
-        "Welcome to my personal blog where I share my thoughts on web development, technology, and more.",
-      content: `# Welcome to My Blog\n\nThis is my first blog post. I'll be sharing my experiences, tutorials, and thoughts about web development.\n\n## What to Expect\n\n- **Web Development Tutorials**: React, Node.js, and more\n- **Project Showcases**: Details about my projects\n- **Tech Insights**: My thoughts on the latest technologies\n\nStay tuned for more content!`,
-      tags: ["welcome", "introduction", "web-development"],
+  // ── Blog Posts ──
+  const blogPosts = [
+    {
+      title: "TBM Akran Eğitimi Sunumu",
+      slug: "tbm-akran-egitimi-sunumu",
+      excerpt: "Değerli eğitmenlerden değerli eğitimler alarak sonuca erdirdiğimiz bu kamp maceramızın son gününde sınav ve sunum yaptık.",
+      content: `# TBM Akran Eğitimi Sunumu
+
+Değerli eğitmenlerden değerli eğitimler alarak sonuca erdirdiğimiz bu kamp maceramızın son gününde sınav ve sunum yaptık. Sunumumuz çok beğenildi :)
+
+## Süreç
+
+- Yoğun bir eğitim dönemi geçirdik
+- Sınav ve sunum aşamalarını başarıyla tamamladık
+- Akran eğitimi kapsamında önemli deneyimler kazandık`,
+      tags: ["egitim", "tbm", "akran-egitimi", "sertifika"],
+      category: "egitim",
       published: true,
       readTime: 3,
-      authorId: admin.id,
+      coverImage: "/Assets/blog1.png",
     },
-  });
+    {
+      title: "Belge Töreni",
+      slug: "belge-toreni",
+      excerpt: "Eğitimler ve sınavlar sonucu bu değerli belgeyi almaya hak kazandım.",
+      content: `# Belge Töreni
 
-  console.log(`✅ Sample blog post created: ${blog.title}`);
+Eğitimler ve sınavlar sonucu bu değerli belgeyi almaya hak kazandım.
+
+## Hatıralar
+
+Bu süreçte edindiğim bilgi ve deneyimler benim için çok değerli. Tüm eğitmenlerimize teşekkür ederim.
+
+Belge töreni, tüm katılımcılar için unutulmaz bir anı oldu.`,
+      tags: ["belge", "toren", "sertifika", "egitim"],
+      category: "egitim",
+      published: true,
+      readTime: 2,
+      coverImage: "/Assets/blog2.png",
+    },
+    {
+      title: "Online Kod Editörüm Yayında!",
+      slug: "online-kod-editorum-yayinda",
+      excerpt: "Uzun zamandır üzerinde çalıştığım API ile çalışan online kod editörüm KODASISTANIM yayında.",
+      content: `# Online Kod Editörüm Yayında!
+
+Uzun zamandır üzerinde çalıştığım API ile çalışan online kod editörüm **KODASISTANIM** yayında. Hemen deneyin!
+
+## Özellikler
+
+- Çoklu dil desteği
+- API ile çalışan altyapı
+- Kullanıcı dostu arayüz
+- Hızlı kod çalıştırma
+
+Bu proje ile yazılım geliştirme sürecinde önemli bir adım attım.`,
+      tags: ["kod-editoru", "online", "api", "yazilim", "proje"],
+      category: "yazilim",
+      published: true,
+      readTime: 4,
+      coverImage: "/Assets/blog3.png",
+    },
+    {
+      title: "Dostlarla Haklı Gurur",
+      slug: "dostlarla-hakli-gurur",
+      excerpt: "Zorlu sürecin sonunda sertifikalarımızı aldık. Haklı gurur.",
+      content: `# Dostlarla Haklı Gurur
+
+Zorlu sürecin sonunda sertifikalarımızı aldık. Haklı gurur.
+
+## Birlikte Başardık
+
+Bu zorlu maratonu dostlarımızla birlikte tamamlamanın mutluluğunu yaşıyoruz. Her birimiz bu süreçte çok şey öğrendik ve büyüdük.
+
+Sertifikalarımızı alırken çekilen bu fotoğraf, bu güzel günlerin hatırası olarak kalacak.`,
+      tags: ["sertifika", "dostluk", "basari", "egitim"],
+      category: "egitim",
+      published: true,
+      readTime: 2,
+      coverImage: "/Assets/blog4.png",
+    },
+    {
+      title: "Dostlarla Toplu Fotoğraf :)",
+      slug: "dostlarla-toplu-fotograf",
+      excerpt: "Hepsi birbirinden kıymetli dostlara selam olsun!",
+      content: `# Dostlarla Toplu Fotoğraf :)
+
+Hepsi birbirinden kıymetli dostlara selam olsun!
+
+## Anılar
+
+Bu güzel insanlarla birlikte olmak, aynı hedefler için çalışmak ve başarmak tarif edilemez bir duygu.
+
+Her birinize ayrı ayrı teşekkür ederim. Bu yolculukta sizlerle birlikte olmak büyük bir şans.`,
+      tags: ["dostluk", "fotograf", "ani", "egitim"],
+      category: "genel",
+      published: true,
+      readTime: 2,
+      coverImage: "/Assets/blog5.png",
+    },
+    {
+      title: "Portfolio Web Sitem Yayında",
+      slug: "portfolio-web-sitem-yayinda",
+      excerpt: "React ile geliştirdiğim kişisel portfolio web sitem artık canlı! Modern tasarım ve ileri seviye özellikler.",
+      content: `# Portfolio Web Sitem Yayında
+
+React ile geliştirdiğim kişisel portfolio web sitem artık canlı! Modern tasarım ve ileri seviye özellikler.
+
+## Teknolojiler
+
+- **React 18** ile modern UI
+- **Framer Motion** ile akıcı animasyonlar
+- **Node.js + Express** backend
+- **PostgreSQL** veritabanı
+- **Prisma** ORM
+
+## Özellikler
+
+- Responsive tasarım
+- Dark tema
+- Admin panel
+- Blog yönetimi
+- İletişim formu`,
+      tags: ["portfolio", "react", "nodejs", "web", "yayin"],
+      category: "yazilim",
+      published: true,
+      readTime: 5,
+      coverImage: "",
+    },
+  ];
+
+  for (const postData of blogPosts) {
+    const blog = await prisma.blogPost.upsert({
+      where: { slug: postData.slug },
+      update: {},
+      create: {
+        ...postData,
+        authorId: admin.id,
+      },
+    });
+    console.log(`✅ Blog post created: ${blog.title}`);
+  }
 
   console.log("🎉 Database seeding completed!");
 }

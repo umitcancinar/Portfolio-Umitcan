@@ -58,6 +58,7 @@ model BlogPost {
   excerpt     String   @db.Text
   content     String   @db.Text
   coverImage  String?
+  category    String   @default("general") // genel, teknoloji, egitim, yazilim
   tags        String[] // array of tag strings
   published   Boolean  @default(false)
   readTime    Int      @default(5) // estimated minutes

@@ -95,126 +95,77 @@ export const deleteProject = async (id) => {
   await api.delete(`/projects/${id}`);
 };
 
-/**
- * Update a project by ID.
- * @param {number} id
- * @param {object} data
- * @returns {Promise<object>}
- */
-export const updateProject = async (id, data) => {
-  const response = await api.put(`/projects/${id}`, data);
-  return response.data;
+export const updateProject = async (id, data) => { const response = await api.put(`/projects/${id}`, data); return response.data; };
+
+// --- Blog ---
+
+export const fetchBlogPosts = async (params = {}) => {
+  const queryParams = new URLSearchParams();
+  if (params.category) queryParams.set("category", params.category);
+  if (params.tag) queryParams.set("tag", params.tag);
+  if (params.search) queryParams.set("search", params.search);
+  const queryString = queryParams.toString();
+  const url = `/blog${queryString ? `?${queryString}` : ""}`;
+  const response = await api.get(url);
+  return response.data.posts || response.data;
 };
 
-// --- Blog Posts ---
-
-/**
- * Fetch all blog posts.
- * @returns {Promise<Array>}
- */
-export const fetchBlogPosts = async () => {
-  const response = await api.get("/blog");
-  return response.data.posts;
+export const fetchBlogPostBySlug = async (slug) => {
+  const response = await api.get(`/blog/${slug}`);
+  return response.data.post || response.data;
 };
 
-/**
- * Add a new blog post.
- * @param {object} post - { title, slug, excerpt, content, coverImage, tags, published, readTime }
- * @returns {Promise<object>}
- */
-export const addBlogPost = async (post) => {
+export const createBlogPost = async (post) => {
   const response = await api.post("/blog", post);
-  return response.data;
+  return response.data.post || response.data;
 };
 
-/**
- * Update a blog post by ID.
- * @param {number} id
- * @param {object} data
- * @returns {Promise<object>}
- */
+export const addBlogPost = createBlogPost;
+
 export const updateBlogPost = async (id, data) => {
   const response = await api.put(`/blog/${id}`, data);
-  return response.data;
+  return response.data.post || response.data;
 };
 
-/**
- * Delete a blog post by ID.
- * @param {number} id
- * @returns {Promise<void>}
- */
 export const deleteBlogPost = async (id) => {
   await api.delete(`/blog/${id}`);
 };
 
 // --- Contact Messages ---
 
-/**
- * Send a contact message (public).
- * @param {object} message - { name, email, subject, message }
- * @returns {Promise<object>}
- */
 export const sendContactMessage = async (message) => {
   const response = await api.post("/contact", message);
   return response.data;
 };
 
-/**
- * Fetch all contact messages (admin).
- * @param {object} params - { read: boolean }
- * @returns {Promise<Array>}
- */
 export const fetchContactMessages = async (params = {}) => {
   const response = await api.get("/contact", { params });
   return response.data.messages;
 };
 
-/**
- * Mark a contact message as read (admin).
- * @param {number} id
- * @returns {Promise<object>}
- */
 export const markMessageRead = async (id) => {
   const response = await api.patch(`/contact/${id}/read`);
   return response.data;
 };
 
-/**
- * Delete a contact message (admin).
- * @param {number} id
- * @returns {Promise<void>}
- */
 export const deleteContactMessage = async (id) => {
   await api.delete(`/contact/${id}`);
 };
 
 // --- Site Settings ---
 
-/**
- * Fetch site settings.
- * @returns {Promise<object>}
- */
 export const fetchSettings = async () => {
   const response = await api.get("/settings");
   return response.data.settings;
 };
 
-/**
- * Update site settings (admin).
- * @param {object} data
- * @returns {Promise<object>}
- */
 export const updateSettings = async (data) => {
   const response = await api.put("/settings", data);
   return response.data;
 };
 
-// --- User Management (Admin) ---
+// --- User Management ---
 
-/**
- * Fetch all users (admin only - if endpoint exists).
- * @returns {Promise<Array>}
- */
 export const fetchUsers = async () => {
   const response = await api.get("/auth/users");
   return response.data.users;

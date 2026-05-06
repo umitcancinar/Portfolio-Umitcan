@@ -3,10 +3,21 @@ const { prisma } = require("../config/database");
 /**
  * Get all blog posts
  */
-async function getAll({ published } = {}) {
+async function getAll({ published, category, tag, search } = {}) {
   const where = {};
 
   if (published !== undefined) where.published = published;
+  if (category) where.category = category;
+  if (tag) where.tags = { has: tag };
+
+  if (search) {
+    where.OR = [
+      { title: { contains: search, mode: "insensitive" } },
+      { excerpt: { contains: search, mode: "insensitive" } },
+      { content: { contains: search, mode: "insensitive" } },
+      { tags: { has: search } },
+    ];
+  }
 
   return prisma.blogPost.findMany({
     where,
