@@ -1,0 +1,10 @@
+# robots.txt — Umitcan Cinar Portfolio
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://www.umitcancinar.me/sitemap.xml
+
+# Disallow admin paths
+Disallow: /login
+Disallow: /admin
