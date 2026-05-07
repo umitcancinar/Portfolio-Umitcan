@@ -13,17 +13,25 @@ import "react-pdf/dist/esm/Page/AnnotationLayer.css";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.min.js`;
 
 const experiences = [
-  { id: 1, role: "Full Stack Developer", company: "Freelance", period: "2023 - Present",
-    description: ["Modern web uygulamaları geliştirme (React, Node.js, PostgreSQL)", "RESTful API tasarımı ve implementasyonu", "Müşteri gereksinimlerine özel çözümler üretme", "Performans optimizasyonu ve deployment süreçleri"], type: "work" },
-  { id: 2, role: "Software Development Intern", company: "TBM Akran Eğitimi", period: "2025 - 2026",
-    description: ["Akran eğitimi kapsamında yazılım geliştirme süreçlerine katılım", "Takım çalışması ve proje yönetimi deneyimi", "Teknik sunum ve dokümantasyon hazırlama"], type: "work" },
+  {
+    id: 1, role: "Full Stack Developer", company: "Freelance", period: "2023 - Present",
+    description: ["Modern web uygulamaları geliştirme (React, Node.js, PostgreSQL)", "RESTful API tasarımı ve implementasyonu", "Müşteri gereksinimlerine özel çözümler üretme", "Performans optimizasyonu ve deployment süreçleri"], type: "work"
+  },
+  {
+    id: 2, role: "Software Development Intern", company: "TBM Akran Eğitimi", period: "2025 - 2026",
+    description: ["Akran eğitimi kapsamında yazılım geliştirme süreçlerine katılım", "Takım çalışması ve proje yönetimi deneyimi", "Teknik sunum ve dokümantasyon hazırlama"], type: "work"
+  },
 ];
 
 const education = [
-  { id: 1, degree: "Bilgisayar Programcılığı", school: "İstanbul Üniversitesi", period: "2023 - 2025",
-    description: "Bilgisayar programcılığı alanında ön lisans eğitimi" },
-  { id: 2, degree: "Full Stack Web Development Bootcamp", school: "Online Platform", period: "2023",
-    description: "Modern web teknolojileri üzerine yoğunlaştırılmış bootcamp programı" },
+  {
+    id: 1, degree: "Bilgisayar Programcılığı", school: "İstanbul Üniversitesi", period: "2023 - 2025",
+    description: "Bilgisayar programcılığı alanında ön lisans eğitimi"
+  },
+  {
+    id: 2, degree: "Full Stack Web Development Bootcamp", school: "Online Platform", period: "2023",
+    description: "Modern web teknolojileri üzerine yoğunlaştırılmış bootcamp programı"
+  },
 ];
 
 const certifications = [
@@ -31,7 +39,54 @@ const certifications = [
   { id: 2, title: "Node.js Backend Development", issuer: "IBM (Coursera)", date: "2024", link: "#" },
   { id: 3, title: "TBM Akran Eğitimi Sertifikası", issuer: "TBM", date: "2026", link: "#" },
 ];
+
+function TimelineItem({ item, icon }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: -20 }}
+      whileInView={{ opacity: 1, x: 0 }}
+      transition={{ duration: 0.4 }}
+      viewport={{ once: true }}
+      style={{ display: "flex", gap: "1rem", marginBottom: "1.5rem", position: "relative", paddingLeft: "0.5rem" }}>
+      <div style={{
+        width: "40px", height: "40px", borderRadius: "12px",
+        background: "linear-gradient(135deg, rgba(139, 63, 217, 0.2), rgba(244, 114, 182, 0.2))",
+        display: "flex", alignItems: "center", justifyContent: "center",
+        fontSize: "1rem", color: "#8b3fd9",
+        border: "1px solid rgba(139, 63, 217, 0.2)", flexShrink: 0, zIndex: 1, position: "relative",
+      }}>
+        {icon}
+      </div>
+      <div style={{
+        flex: 1,
+        background: "rgba(255, 255, 255, 0.04)", backdropFilter: "blur(12px) saturate(180%)",
+        WebkitBackdropFilter: "blur(12px) saturate(180%)",
+        border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "16px", padding: "1.25rem",
+      }}>
+        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+          <div>
+            <h5 style={{ color: "#f1f5f9", margin: 0, fontSize: "1rem", fontWeight: 600 }}>{item.role}</h5>
+            <p style={{ color: "#8b3fd9", margin: "0.25rem 0", fontSize: "0.85rem" }}>{item.company}</p>
+          </div>
+          <span style={{
+            background: "rgba(139, 63, 217, 0.12)", color: "#b07ce6",
+            padding: "0.2rem 0.6rem", borderRadius: "9999px", fontSize: "0.7rem", whiteSpace: "nowrap",
+          }}>
+            {item.period}
+          </span>
+        </div>
+        <ul style={{ margin: "0.5rem 0 0", paddingLeft: "1rem", color: "#94a3b8", fontSize: "0.8rem" }}>
+          {item.description.map((desc, i) => (
+            <li key={i} style={{ marginBottom: "0.25rem" }}>{desc}</li>
+          ))}
+        </ul>
+      </div>
+    </motion.div>
+  );
+}
+
 function ResumeNew() {
+
   const [width, setWidth] = useState(1200);
 
   useEffect(() => {
@@ -102,8 +157,10 @@ function ResumeNew() {
               <div style={sectionIconStyle}><MdWork /></div> Deneyim
             </div>
             <div style={{ position: "relative" }}>
-              <div style={{ position: "absolute", left: "2rem", top: 0, width: "2px",
-                height: "calc(100% - 1rem)", background: "linear-gradient(180deg, #8b3fd9, #f472b6, transparent)", opacity: 0.3 }} />
+              <div style={{
+                position: "absolute", left: "2rem", top: 0, width: "2px",
+                height: "calc(100% - 1rem)", background: "linear-gradient(180deg, #8b3fd9, #f472b6, transparent)", opacity: 0.3
+              }} />
               {experiences.map((exp, index) => (
                 <TimelineItem key={exp.id} item={exp} index={index} icon={<MdWork size={20} />} />
               ))}
@@ -134,8 +191,10 @@ function ResumeNew() {
                         <h5 style={{ color: "#f1f5f9", margin: 0, fontSize: "1rem", fontWeight: 600 }}>{edu.degree}</h5>
                         <p style={{ color: "#8b3fd9", margin: "0.25rem 0", fontSize: "0.85rem" }}>{edu.school}</p>
                       </div>
-                      <span style={{ background: "rgba(139, 63, 217, 0.12)", color: "#b07ce6",
-                        padding: "0.2rem 0.6rem", borderRadius: "9999px", fontSize: "0.7rem", whiteSpace: "nowrap" }}>
+                      <span style={{
+                        background: "rgba(139, 63, 217, 0.12)", color: "#b07ce6",
+                        padding: "0.2rem 0.6rem", borderRadius: "9999px", fontSize: "0.7rem", whiteSpace: "nowrap"
+                      }}>
                         {edu.period}
                       </span>
                     </div>
@@ -162,9 +221,11 @@ function ResumeNew() {
                       borderLeft: "3px solid #f472b6",
                     }}>
                     <div style={{ display: "flex", alignItems: "flex-start", gap: "0.75rem" }}>
-                      <div style={{ width: "32px", height: "32px", borderRadius: "8px",
+                      <div style={{
+                        width: "32px", height: "32px", borderRadius: "8px",
                         background: "rgba(244, 114, 182, 0.15)", display: "flex", alignItems: "center",
-                        justifyContent: "center", fontSize: "0.9rem", color: "#f472b6", flexShrink: 0 }}>
+                        justifyContent: "center", fontSize: "0.9rem", color: "#f472b6", flexShrink: 0
+                      }}>
                         <AiOutlineStar />
                       </div>
                       <div style={{ flex: 1 }}>
