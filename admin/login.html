@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Paneli · Oturum Aç</title>
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="login-body">
+<script>
+    // Gizli admin girisi - direkt erisimi engelle
+    (function() {
+        if (sessionStorage.getItem('_admin_access') !== 'granted') {
+            window.location.replace('../index.html');
+            return;
+        }
+        sessionStorage.removeItem('_admin_access');
+    })();
+</script>
+    <div class="login-container">
+        <div class="login-card">
+            <div class="login-logo">
+                <div class="login-logo-icon">
+                    <svg width="40" height="40" viewBox="0 0 40 40" fill="none">
+                        <rect width="40" height="40" rx="10" fill="currentColor"/>
+                        <path d="M12 28V12l16 8-16 8z" fill="white"/>
+                    </svg>
+                </div>
+                <h1 class="login-title">Admin Paneli</h1>
+                <p class="login-subtitle">Yönetim paneline erişmek için oturum açın</p>
+            </div>
+
+            <form class="login-form" id="loginForm" autocomplete="off">
+                <div class="login-field">
+                    <label class="login-label" for="email">E-posta Adresiniz</label>
+                    <input
+                        type="email"
+                        id="email"
+                        class="login-input"
+                        placeholder="E-posta adresinizi girin"
+                        autocomplete="email"
+                        required
+                    >
+                    <span class="login-focus-line"></span>
+                </div>
+
+                <div class="login-field">
+                    <label class="login-label" for="password">Şifre</label>
+                    <input
+                        type="password"
+                        id="password"
+                        class="login-input"
+                        placeholder="Şifrenizi girin"
+                        autocomplete="current-password"
+                        required
+                    >
+                    <span class="login-focus-line"></span>
+                </div>
+
+                <div class="login-error" id="loginError"></div>
+
+                <button type="submit" class="login-btn" id="loginBtn">
+                    <span class="login-btn-text">Oturum Aç</span>
+                    <span class="login-btn-spinner" aria-hidden="true">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                            <circle cx="10" cy="10" r="8" stroke="currentColor" stroke-width="2" opacity="0.3"/>
+                            <path d="M10 2a8 8 0 018 8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </span>
+                </button>
+            </form>
+
+            <div class="login-footer">
+                <button class="theme-toggle-btn" id="themeToggleBtn" aria-label="Tema değiştir">
+                    <span class="theme-icon-light">☀️</span>
+                    <span class="theme-icon-dark">🌙</span>
+                </button>
+            </div>
+        </div>
+
+        <p class="login-copyright">© 2026 Portfolio Admin · Tüm hakları saklıdır</p>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
+    <title>Admin Panel · Yönetim</title>
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" href="css/admin.css">
+</head>
+<body class="admin-body">
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<aside class="sidebar" id="sidebar">
+<div class="sidebar-header">
+<a href="#" class="sidebar-logo" data-page="dashboard">
+<svg width="32" height="32" viewBox="0 0 40 40"><rect width="40" height="40" rx="10" fill="currentColor"/><path d="M12 28V12l16 8-16 8z" fill="white"/></svg>
+<span class="sidebar-brand">Admin</span>
+</a>
+</div>
+<nav class="sidebar-nav" id="sidebarNav">
+<a href="#" class="nav-item active" data-page="dashboard"><span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="2" width="7" height="7" rx="1.5"/><rect x="11" y="2" width="7" height="7" rx="1.5"/><rect x="2" y="11" width="7" height="7" rx="1.5"/><rect x="11" y="11" width="7" height="7" rx="1.5"/></svg></span><span class="nav-label">Dashboard</span></a>
+<a href="#" class="nav-item" data-page="content"><span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M14 2H6a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V4a2 2 0 00-2-2z"/><path d="M10 2v18"/></svg></span><span class="nav-label">İçerik</span></a>
+<a href="#" class="nav-item" data-page="projects"><span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><rect x="2" y="2" width="16" height="16" rx="2"/><path d="M2 7h16"/><path d="M7 7v11"/></svg></span><span class="nav-label">Projeler</span></a>
+<a href="#" class="nav-item" data-page="references"><span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><path d="M10 6v4l2.5 2.5"/></svg></span><span class="nav-label">Referanslar</span></a>
+
+<a href="#" class="nav-item" data-page="messages"><span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M17 9.5V5a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2h4.5"/><path d="M15 13l2 2 4-4"/></svg></span><span class="nav-label">Mesajlar</span><span class="nav-badge" id="unreadBadge" style="display:none">0</span></a>
+<a href="#" class="nav-item" data-page="cv"><span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M11 2H6a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7l-5-5z"/><path d="M11 2v5h5"/><path d="M8 12h4"/><path d="M8 15h4"/></svg></span><span class="nav-label">CV</span></a>
+<a href="#" class="nav-item" data-page="chatbot"><span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="8"/><path d="M7 9h.01"/><path d="M13 9h.01"/><path d="M7 13c.83 1.1 2.08 1.67 3.5 1.5 1.17-.14 2.16-.73 2.9-1.5"/></svg></span><span class="nav-label">Chatbot</span></a>
+<a href="#" class="nav-item" data-page="game"><span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><polygon points="8,2 18,10 8,18 2,10"/></svg></span><span class="nav-label">Oyun Skorları</span></a>
+</nav>
+<div class="sidebar-footer">
+<a href="#" class="nav-item" data-page="settings"><span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><circle cx="10" cy="10" r="3"/><path d="M10 2v2M10 16v2M2 10h2M16 10h2M4.93 4.93l1.41 1.41M13.66 13.66l1.41 1.41M4.93 15.07l1.41-1.41M13.66 6.34l1.41-1.41"/></svg></span><span class="nav-label">Ayarlar</span></a>
+<button class="nav-item logout-btn" id="logoutBtn"><span class="nav-icon"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M8 17H5a2 2 0 01-2-2V5a2 2 0 012-2h3"/><path d="M14 14l3-4-3-4"/><path d="M17 10H8"/></svg></span><span class="nav-label">Çıkış Yap</span></button>
+</div>
+</aside>
+<main class="main-content" id="mainContent">
+<header class="topbar">
+<button class="topbar-menu-btn" id="menuToggle" aria-label="Menü"><svg width="22" height="22" viewBox="0 0 22 22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h16M3 11h16M3 16h16"/></svg></button>
+<div class="topbar-title" id="topbarTitle">Dashboard</div>
+<div class="topbar-actions">
+<button class="theme-toggle-btn topbar-theme-btn" id="themeToggleBtn" aria-label="Tema"><span class="theme-icon-light">☀️</span><span class="theme-icon-dark">🌙</span></button>
+<div class="topbar-user"><div class="topbar-avatar" id="topbarAvatar"></div><span class="topbar-username" id="topbarUsername">Admin</span></div>
+</div>
+</header>
+<div class="page-container" id="pageContainer"></div>
+</main>
+<div class="toast-container" id="toastContainer" aria-live="polite"></div>
+<div class="modal-overlay" id="confirmModal" style="display:none">
+<div class="modal-card"><div class="modal-icon"><svg width="28" height="28" viewBox="0 0 28 28" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="14" cy="14" r="10"/><path d="M14 8v8"/><circle cx="14" cy="18" r="1" fill="currentColor"/></svg></div><h3 class="modal-title" id="confirmTitle">Emin misiniz?</h3><p class="modal-text" id="confirmText">Bu işlem geri alınamaz.</p><div class="modal-actions"><button class="btn btn-secondary" id="confirmCancel">İptal</button><button class="btn btn-danger" id="confirmOk">Sil</button></div></div>
+</div>
+<div class="modal-overlay" id="detailModal" style="display:none">
+<div class="modal-card modal-detail"><div class="modal-header"><h3 class="modal-title" id="detailTitle">Detay</h3><button class="modal-close" id="detailClose"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 5l10 10M15 5L5 15"/></svg></button></div><div class="modal-body" id="detailBody"></div></div>
+</div>
+<script src="js/admin.js"></script>
+</body>
+</html>
+=======
+    <title>Admin Panel | Portfolio</title>
+    <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+    <div id="loginScreen" class="login-screen">
+        <div class="login-card">
+            <h1 class="login-title">⚙️ Admin Panel</h1>
+            <p class="login-subtitle">Yönetim paneline giriş yapın</p>
+            <form id="loginForm" class="login-form">
+                <div class="form-group">
+                    <label for="username" class="form-label">Kullanıcı Adı</label>
+                    <input type="text" id="username" class="form-input" placeholder="admin" required autocomplete="username">
+                </div>
+                <div class="form-group">
+                    <label for="password" class="form-label">Şifre</label>
+                    <input type="password" id="password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+                </div>
+                <p class="login-error" id="loginError" aria-live="polite"></p>
+                <button type="submit" class="btn btn-primary login-btn">Giriş Yap</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboardScreen" class="dashboard-screen hidden">
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h2 class="sidebar-logo">⚙️ Admin</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="sidebar-link active" data-panel="overview">📊 Genel Bakış</button>
+                <button class="sidebar-link" data-panel="hero">🦸 Hero Bölümü</button>
+                <button class="sidebar-link" data-panel="about">👤 Hakkımda</button>
+                <button class="sidebar-link" data-panel="projects">📁 Projeler</button>
+                <button class="sidebar-link" data-panel="skills">💪 Beceriler</button>
+                <button class="sidebar-link" data-panel="references">⭐ Referanslar</button>
+                <button class="sidebar-link" data-panel="game-scores">🎮 Oyun Skorları</button>
+                <button class="sidebar-link" data-panel="cms">📝 CMS Sayfaları</button>
+                <button class="sidebar-link" data-panel="messages">✉️ Mesajlar</button>
+                <button class="sidebar-link" data-panel="settings">⚙️ Ayarlar</button>
+            </nav>
+            <button class="sidebar-logout" id="logoutBtn">🚪 Çıkış Yap</button>
+        </aside>
+        <main class="main-content">
+            <header class="dashboard-header">
+                <h1 class="dashboard-title" id="panelTitle">Genel Bakış</h1>
+                <button class="theme-toggle" id="adminThemeToggle">🌓</button>
+            </header>
+            <div class="dashboard-body" id="dashboardBody">
+                <div class="loading-state" id="loadingState">Yükleniyor...</div>
+            </div>
+        </main>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
+>>>>>>> 991f419 (fix: comprehensive final polish - fix bugs, add chatbot/game/admin modules, optimize CSS/JS)

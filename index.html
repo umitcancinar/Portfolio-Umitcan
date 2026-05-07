@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="tr" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Kişisel Portfolyo - İsim Soyisim">
+    <meta name="theme-color" content="#ffffff">
+    <title>İsim Soyisim | Portfolio</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="chatbot.css">
+    <link rel="stylesheet" href="game/style.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loadingScreen" aria-hidden="true">
+        <div class="loading-logo">
+            <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                <circle cx="24" cy="24" r="22" stroke="currentColor" stroke-width="2" stroke-dasharray="138.2" stroke-dashoffset="0" class="loading-circle">
+                    <animateTransform attributeName="transform" type="rotate" from="0 24 24" to="360 24 24" dur="2s" repeatCount="indefinite"/>
+                </circle>
+            </svg>
+        </div>
+        <p class="loading-text">Yükleniyor...</p>
+    </div>
+
+
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+    <header class="site-header" id="siteHeader" role="banner">
+        <nav class="navbar container" role="navigation" aria-label="Ana navigasyon">
+            <a href="#hero" class="logo" aria-label="Ana sayfaya git">İS</a>
+            <ul class="nav-links" id="navLinks" role="menubar">
+                <li role="none"><a href="#about" role="menuitem" class="nav-link">Hakkımda</a></li>
+                <li role="none"><a href="#projects" role="menuitem" class="nav-link">Projeler</a></li>
+                <li role="none"><a href="#game" role="menuitem" class="nav-link">Oyun</a></li>
+                <li role="none"><a href="#references" role="menuitem" class="nav-link">Referanslar</a></li>
+                <li role="none"><a href="#skills" role="menuitem" class="nav-link">Beceriler</a></li>
+                <li role="none"><a href="#contact" role="menuitem" class="nav-link">İletişim</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle" aria-label="Karanlık mod geçişi" title="Tema değiştir">
+                <span class="toggle-icon" id="toggleIcon">☀️</span>
+            </button>
+            <button class="hamburger" id="hamburger" aria-label="Menüyü aç/kapa" aria-expanded="false">
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+                <span class="hamburger-line"></span>
+            </button>
+        </nav>
+    </header>
+
+    <main>
+
+        <section class="hero" id="hero" aria-label="Tanıtım">
+            <div class="hero-bg-shape"></div>
+            <div class="container hero-content">
+                <p class="hero-greeting">Merhaba, ben</p>
+                <h1 class="hero-title">İsim Soyisim</h1>
+                <p class="hero-subtitle">
+                    <span class="hero-subtitle-text">Yazılım Geliştirici &amp; Tasarım Tutkunu</span>
+                </p>
+                <p class="hero-description">
+                    Modern, temiz ve kullanıcı odaklı dijital deneyimler yaratıyorum.
+                    Apple'ın tasarım felsefesinden ilham alarak, estetik ve işlevselliği
+                    bir araya getiriyorum.
+                </p>
+                <div class="hero-actions">
+                    <a href="#projects" class="btn btn-primary">Projelerimi İncele</a>
+                    <a href="#contact" class="btn btn-secondary">İletişime Geç</a>
+                </div>
+                <div class="hero-kb-hint" aria-hidden="true">
+                    <kbd>⌘</kbd><span>+</span><kbd>K</kbd><span>Proje Ara</span>
+                </div>
+            </div>
+
+            <div class="scroll-indicator" aria-hidden="true">
+                <span class="scroll-text">Aşağı kaydır</span>
+                <div class="scroll-line"></div>
+            </div>
+        </section>
+
+        <section class="section about" id="about" aria-label="Hakkımda">
+            <div class="container">
+                <div class="section-header fade-section">
+                    <h2 class="section-title">Hakkımda</h2>
+                    <p class="section-subtitle">Beni daha yakından tanıyın</p>
+                </div>
+                <div class="about-grid">
+                    <div class="about-text fade-section">
+                        <p class="about-paragraph">
+                            Merhaba! Ben <strong>İsim Soyisim</strong>. 5+ yıldır yazılım geliştirme
+                            alanında çalışıyor, kullanıcı odaklı, estetik ve performanslı web
+                            uygulamaları oluşturuyorum.
+                        </p>
+                        <p class="about-paragraph">
+                            Frontend teknolojilerinde uzmanlaşırken, backend ve tasarım alanlarında
+                            da kendimi sürekli geliştiriyorum. Amacım, her pikseli düşünülmüş,
+                            akıcı ve erişilebilir dijital ürünler ortaya çıkarmak.
+                        </p>
+                        <div class="about-features">
+                            <div class="feature-item">
+                                <span class="feature-icon" aria-hidden="true">⚡</span>
+                                <span class="feature-text">Hızlı ve Optimize Kod</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon" aria-hidden="true">🎨</span>
+                                <span class="feature-text">Piksel Mükemmeliyeti</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon" aria-hidden="true">♿</span>
+                                <span class="feature-text">Erişilebilir Tasarım</span>
+                            </div>
+                            <div class="feature-item">
+                                <span class="feature-icon" aria-hidden="true">📱</span>
+                                <span class="feature-text">Responsive Geliştirme</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-image-wrapper fade-section">
+                        <div class="about-image-placeholder" role="img" aria-label="Profil fotoğrafı">
+                            <span class="placeholder-icon" aria-hidden="true">👤</span>
+                            <span class="placeholder-text">Profil Fotoğrafı</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="about-cv-wrapper fade-section">
+                    <a href="#" class="btn btn-secondary cv-download-btn" id="cvDownloadBtn" target="_blank" rel="noopener">
+                        <span class="cv-icon" aria-hidden="true">📄</span> CV'mi İndir
+                    </a>
+                </div>
+                <div class="stats-grid fade-section">
+                    <div class="stat-card">
+                        <span class="stat-number" data-target="5">0</span>
+                        <span class="stat-plus" aria-hidden="true">+</span>
+                        <span class="stat-label">Yıllık Deneyim</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" data-target="50">0</span>
+                        <span class="stat-plus" aria-hidden="true">+</span>
+                        <span class="stat-label">Tamamlanan Proje</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" data-target="30">0</span>
+                        <span class="stat-plus" aria-hidden="true">+</span>
+                        <span class="stat-label">Mutlu Müşteri</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number" data-target="15">0</span>
+                        <span class="stat-plus" aria-hidden="true">+</span>
+                        <span class="stat-label">Açık Kaynak Katkı</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section projects" id="projects" aria-label="Projeler">
+            <div class="container">
+                <div class="section-header fade-section">
+                    <h2 class="section-title">Projeler</h2>
+                    <p class="section-subtitle">Son çalışmalarımdan bazıları</p>
+                </div>
+                <div class="project-filters fade-section" id="projectFilters">
+                    <button class="filter-btn active" data-filter="all">Tümü</button>
+                    <button class="filter-btn" data-filter="frontend">Frontend</button>
+                    <button class="filter-btn" data-filter="backend">Backend</button>
+                    <button class="filter-btn" data-filter="mobile">Mobil</button>
+                </div>
+                <div class="projects-grid" id="projectsGrid">
+                    <article class="project-card fade-section" aria-label="Proje 1">
+                        <div class="card-image">
+                            <div class="card-image-placeholder" aria-hidden="true">
+                                <span class="card-placeholder-icon">🖥️</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Proje Adı</h3>
+                            <p class="card-desc">Modern ve responsive bir web uygulaması. Kullanıcı deneyimi ön planda tutuldu.</p>
+                            <div class="card-tags">
+                                <span class="tag">React</span>
+                                <span class="tag">TypeScript</span>
+                                <span class="tag">Tailwind</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card fade-section" aria-label="Proje 2">
+                        <div class="card-image">
+                            <div class="card-image-placeholder" aria-hidden="true">
+                                <span class="card-placeholder-icon">📱</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Proje Adı</h3>
+                            <p class="card-desc">iOS ve Android için geliştirilmiş cross-platform mobil uygulama.</p>
+                            <div class="card-tags">
+                                <span class="tag">Flutter</span>
+                                <span class="tag">Dart</span>
+                                <span class="tag">Firebase</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card fade-section" aria-label="Proje 3">
+                        <div class="card-image">
+                            <div class="card-image-placeholder" aria-hidden="true">
+                                <span class="card-placeholder-icon">⚙️</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Proje Adı</h3>
+                            <p class="card-desc">Mikroservis mimarisi ile oluşturulmuş yüksek performanslı backend sistemi.</p>
+                            <div class="card-tags">
+                                <span class="tag">Node.js</span>
+                                <span class="tag">GraphQL</span>
+                                <span class="tag">Docker</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card fade-section" aria-label="Proje 4">
+                        <div class="card-image">
+                            <div class="card-image-placeholder" aria-hidden="true">
+                                <span class="card-placeholder-icon">🎨</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Proje Adı</h3>
+                            <p class="card-desc">Kurumsal kimlik ve web sitesi tasarımı. Sıfırdan marka deneyimi oluşturuldu.</p>
+                            <div class="card-tags">
+                                <span class="tag">Figma</span>
+                                <span class="tag">Next.js</span>
+                                <span class="tag">Framer</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card fade-section" aria-label="Proje 5">
+                        <div class="card-image">
+                            <div class="card-image-placeholder" aria-hidden="true">
+                                <span class="card-placeholder-icon">📊</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Proje Adı</h3>
+                            <p class="card-desc">Gerçek zamanlı veri görselleştirme ve analiz paneli.</p>
+                            <div class="card-tags">
+                                <span class="tag">Vue.js</span>
+                                <span class="tag">D3.js</span>
+                                <span class="tag">WebSocket</span>
+                            </div>
+                        </div>
+                    </article>
+                    <article class="project-card fade-section" aria-label="Proje 6">
+                        <div class="card-image">
+                            <div class="card-image-placeholder" aria-hidden="true">
+                                <span class="card-placeholder-icon">🛒</span>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="card-title">Proje Adı</h3>
+                            <p class="card-desc">Full-stack e-ticaret platformu. Ödeme entegrasyonu ve admin paneli.</p>
+                            <div class="card-tags">
+                                <span class="tag">Angular</span>
+                                <span class="tag">Strapi</span>
+                                <span class="tag">Stripe</span>
+                            </div>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== GAME SECTION ===== -->
+        <section class="section game-section" id="game" aria-label="Hafıza Oyunu">
+            <div class="container">
+                <div class="section-header fade-section">
+                    <h2 class="section-title">Biraz Eğlence 🎮</h2>
+                    <p class="section-subtitle">Hafızanı test et</p>
+                </div>
+
+                <div class="game-wrapper fade-section">
+                    <!-- Stats -->
+                    <div class="game-stats">
+                        <div class="game-stat">
+                            <span class="game-stat-label">⏱ Süre</span>
+                            <span class="game-stat-value" id="gameTimer">00:00</span>
+                        </div>
+                        <div class="game-stat">
+                            <span class="game-stat-label">👆 Hamle</span>
+                            <span class="game-stat-value" id="gameMoves">0</span>
+                        </div>
+                        <div class="game-stat">
+                            <span class="game-stat-label">⭐ Puan</span>
+                            <span class="game-stat-value" id="gameScore">0</span>
+                        </div>
+                        <div class="game-stat">
+                            <span class="game-stat-label">🏆 En İyi</span>
+                            <span class="game-stat-value best" id="gameBestScore">—</span>
+                        </div>
+                    </div>
+
+                    <!-- Game Grid -->
+                    <div class="game-grid" id="gameGrid" role="grid" aria-label="Hafıza kartı oyun alanı">
+                        <!-- Cards rendered by JS -->
+                    </div>
+
+                    <!-- Restart Button -->
+                    <button class="game-btn game-btn-restart" id="gameRestartBtn" aria-label="Oyunu yeniden başlat">
+                        🔄 Yeniden Başlat
+                    </button>
+
+                    <!-- High Scores -->
+                    <div class="game-scores">
+                        <h3 class="game-scores-title">🏅 Skor Tablosu</h3>
+                        <div class="game-scores-table">
+                            <div class="game-scores-header">
+                                <span>#</span>
+                                <span>Puan</span>
+                                <span>Hamle</span>
+                                <span>Süre</span>
+                            </div>
+                            <div id="gameScoresBody">
+                                <div class="game-scores-empty">Henüz skor yok. İlk oyunu sen kazan! 🏆</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section references" id="references" aria-label="Referanslar">
+            <div class="container">
+                <div class="section-header fade-section">
+                    <h2 class="section-title">Referanslar</h2>
+                    <p class="section-subtitle">Müşterilerimiz Ne Diyor?</p>
+                </div>
+                <div class="references-grid" id="referencesGrid">
+                    <article class="reference-card fade-section">
+                        <div class="reference-logo">
+                            <span class="reference-logo-placeholder" aria-hidden="true">🏢</span>
+                        </div>
+                        <div class="reference-body">
+                            <p class="reference-quote">"Harika bir çalışma! Projeyi zamanında ve beklentilerin ötesinde teslim etti. Kesinlikle tekrar çalışacağız."</p>
+                            <div class="reference-author">
+                                <strong class="reference-name">Ahmet Yılmaz</strong>
+                                <span class="reference-role">CEO, TechStart A.Ş.</span>
+                            </div>
+                        </div>
+                        <a href="#" class="reference-link" aria-label="Proje detayı">Projeyi İncele →</a>
+                    </article>
+                    <article class="reference-card fade-section">
+                        <div class="reference-logo">
+                            <span class="reference-logo-placeholder" aria-hidden="true">💼</span>
+                        </div>
+                        <div class="reference-body">
+                            <p class="reference-quote">"Profesyonel yaklaşımı ve teknik bilgisi ile karmaşık sorunlarımıza hızlı çözümler üretti."</p>
+                            <div class="reference-author">
+                                <strong class="reference-name">Ayşe Kaya</strong>
+                                <span class="reference-role">CTO, DigitalCore</span>
+                            </div>
+                        </div>
+                        <a href="#" class="reference-link" aria-label="Proje detayı">Projeyi İncele →</a>
+                    </article>
+                    <article class="reference-card fade-section">
+                        <div class="reference-logo">
+                            <span class="reference-logo-placeholder" aria-hidden="true">🚀</span>
+                        </div>
+                        <div class="reference-body">
+                            <p class="reference-quote">"Kullanıcı deneyimi konusundaki önerileri ürünümüzü başka bir seviyeye taşıdı."</p>
+                            <div class="reference-author">
+                                <strong class="reference-name">Mehmet Demir</strong>
+                                <span class="reference-role">Founder, InnoVent</span>
+                            </div>
+                        </div>
+                        <a href="#" class="reference-link" aria-label="Proje detayı">Projeyi İncele →</a>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Victory Overlay -->
+        <div class="game-victory" id="gameVictory" aria-hidden="true">
+            <div class="game-victory-backdrop"></div>
+            <div class="game-victory-content">
+                <span class="game-victory-emoji">🎉</span>
+                <h2 class="game-victory-title">Tebrikler!</h2>
+                <p class="game-victory-subtitle">Tüm kartları eşleştirdin!<br>Harika bir hafızan var.</p>
+                <div class="game-victory-stats">
+                    <div class="game-victory-stat">
+                        <span class="game-victory-stat-value highlight">0</span>
+                        <span class="game-victory-stat-label">Puan</span>
+                    </div>
+                    <div class="game-victory-stat">
+                        <span class="game-victory-stat-value">0</span>
+                        <span class="game-victory-stat-label">Hamle</span>
+                    </div>
+                    <div class="game-victory-stat">
+                        <span class="game-victory-stat-value">00:00</span>
+                        <span class="game-victory-stat-label">Süre</span>
+                    </div>
+                </div>
+                <div class="game-victory-best">🏆 Yeni En İyi Skor!</div>
+                <div class="game-victory-actions">
+                    <button class="game-btn game-btn-restart" id="gameVictoryPlayAgain">🔄 Tekrar Oyna</button>
+                    <button class="game-btn game-btn-secondary" id="gameVictoryClose">✕ Kapat</button>
+                </div>
+            </div>
+        </div>
+        <section class="section skills" id="skills" aria-label="Beceriler">
+            <div class="container">
+                <div class="section-header fade-section">
+                    <h2 class="section-title">Beceriler</h2>
+                    <p class="section-subtitle">Teknolojik yetkinliklerim</p>
+                </div>
+                <div class="skills-grid">
+                    <div class="skill-category fade-section">
+                        <div class="skill-category-header">
+                            <span class="skill-category-icon" aria-hidden="true">🌐</span>
+                            <h3 class="skill-category-title">Frontend</h3>
+                        </div>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">HTML / CSS</span>
+                                    <span class="skill-percent">95%</span>
+                                </div>
+                                <div class="skill-bar"><div class="skill-bar-fill" data-width="95" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">JavaScript / TypeScript</span>
+                                    <span class="skill-percent">90%</span>
+                                </div>
+                                <div class="skill-bar"><div class="skill-bar-fill" data-width="90" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">React / Next.js</span>
+                                    <span class="skill-percent">85%</span>
+                                </div>
+                                <div class="skill-bar"><div class="skill-bar-fill" data-width="85" style="width: 0%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-category fade-section">
+                        <div class="skill-category-header">
+                            <span class="skill-category-icon" aria-hidden="true">⚙️</span>
+                            <h3 class="skill-category-title">Backend</h3>
+                        </div>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">Node.js / Express</span>
+                                    <span class="skill-percent">85%</span>
+                                </div>
+                                <div class="skill-bar"><div class="skill-bar-fill" data-width="85" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">Python / Django</span>
+                                    <span class="skill-percent">75%</span>
+                                </div>
+                                <div class="skill-bar"><div class="skill-bar-fill" data-width="75" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">GraphQL / REST</span>
+                                    <span class="skill-percent">80%</span>
+                                </div>
+                                <div class="skill-bar"><div class="skill-bar-fill" data-width="80" style="width: 0%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-category fade-section">
+                        <div class="skill-category-header">
+                            <span class="skill-category-icon" aria-hidden="true">🛠️</span>
+                            <h3 class="skill-category-title">Araçlar</h3>
+                        </div>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">Git / GitHub</span>
+                                    <span class="skill-percent">95%</span>
+                                </div>
+                                <div class="skill-bar"><div class="skill-bar-fill" data-width="95" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">Docker / DevOps</span>
+                                    <span class="skill-percent">70%</span>
+                                </div>
+                                <div class="skill-bar"><div class="skill-bar-fill" data-width="70" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">VS Code / Figma</span>
+                                    <span class="skill-percent">90%</span>
+                                </div>
+                                <div class="skill-bar"><div class="skill-bar-fill" data-width="90" style="width: 0%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="skill-category fade-section">
+                        <div class="skill-category-header">
+                            <span class="skill-category-icon" aria-hidden="true">🎯</span>
+                            <h3 class="skill-category-title">Tasarım</h3>
+                        </div>
+                        <div class="skill-items">
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">UI / UX Tasarım</span>
+                                    <span class="skill-percent">80%</span>
+                                </div>
+                                <div class="skill-bar"><div class="skill-bar-fill" data-width="80" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">Webflow / Framer</span>
+                                    <span class="skill-percent">75%</span>
+                                </div>
+                                <div class="skill-bar"><div class="skill-bar-fill" data-width="75" style="width: 0%;"></div></div>
+                            </div>
+                            <div class="skill-item">
+                                <div class="skill-info">
+                                    <span class="skill-name">Tasarım Sistemleri</span>
+                                    <span class="skill-percent">85%</span>
+                                </div>
+                                <div class="skill-bar"><div class="skill-bar-fill" data-width="85" style="width: 0%;"></div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section contact" id="contact" aria-label="İletişim">
+            <div class="container">
+                <div class="section-header fade-section">
+                    <h2 class="section-title">İletişim</h2>
+                    <p class="section-subtitle">Birlikte çalışmak için benimle iletişime geçin</p>
+                </div>
+                <div class="contact-grid">
+                    <div class="contact-form-wrapper fade-section">
+                        <form class="contact-form" id="contactForm" novalidate aria-label="İletişim formu">
+                            <div class="form-group">
+                                <label for="name" class="form-label">Adınız</label>
+                                <input type="text" id="name" name="name" class="form-input" placeholder="Adınız" required aria-required="true">
+                                <span class="form-focus-line"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="email" class="form-label">E-posta Adresiniz</label>
+                                <input type="email" id="email" name="email" class="form-input" placeholder="ornek@email.com" required aria-required="true">
+                                <span class="form-focus-line"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="message" class="form-label">Mesajınız</label>
+                                <textarea id="message" name="message" class="form-input form-textarea" placeholder="Mesajınızı buraya yazın..." rows="4" required aria-required="true"></textarea>
+                                <span class="form-focus-line"></span>
+                            </div>
+                            <button type="submit" class="btn btn-primary form-submit">Mesaj Gönder</button>
+                        </form>
+                    </div>
+                    <div class="contact-info-wrapper fade-section">
+                        <div class="contact-info">
+                            <h3 class="contact-info-title">Bana Ulaşın</h3>
+                            <p class="contact-info-text">
+                                Aşağıdaki kanallardan bana ulaşabilir, sosyal medya hesaplarımdan
+                                beni takip edebilirsiniz. Size en kısa sürede dönüş yapacağım.
+                            </p>
+                            <div class="contact-details">
+                                <div class="contact-detail-item">
+                                    <span class="detail-icon" aria-hidden="true">✉️</span>
+                                    <a href="mailto:ornek@email.com" class="detail-link">ornek@email.com</a>
+                                </div>
+                                <div class="contact-detail-item">
+                                    <span class="detail-icon" aria-hidden="true">📍</span>
+                                    <span class="detail-text">İstanbul, Türkiye</span>
+                                </div>
+                            </div>
+                            <div class="social-links">
+                                <a href="#" class="social-link" aria-label="GitHub profili" title="GitHub">
+                                    <span class="social-icon" aria-hidden="true">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                                    </span>
+                                </a>
+                                <a href="#" class="social-link" aria-label="LinkedIn profili" title="LinkedIn">
+                                    <span class="social-icon" aria-hidden="true">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
+                                    </span>
+                                </a>
+                                <a href="#" class="social-link" aria-label="Twitter/X profili" title="Twitter">
+                                    <span class="social-icon" aria-hidden="true">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16zM4 20l6.768 -6.768M17.232 6.232L20 4"></path></svg>
+                                    </span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="chatbot-root"></div>
+        </section>
+    </main>
+
+    <button class="back-to-top" id="backToTop" aria-label="Sayfa başına dön" title="Yukarı çık">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="18 15 12 9 6 15"></polyline>
+        </svg>
+    </button>
+
+    <footer class="site-footer" role="contentinfo">
+        <div class="container footer-container">
+            <p class="footer-text">&copy; 2026 İsim Soyisim. Tüm hakları saklıdır.</p>
+            <p class="footer-text footer-small">Apple'dan ilham alarak, sevgiyle tasarlandı.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="game/script.js"></script>
+    <script src="chatbot.js"></script>
+</body>
+</html>
